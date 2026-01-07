@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal Skins - Виртуальные кейсы CS2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://telegram.org/js/telegram-web-app.js?2"></script>
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f8f9fa;
+            --success: #00b894;
+            --danger: #e74c3c;
+            --warning: #fdcb6e;
+            --info: #0984e3;
+            --telegram: #3390ec;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo i {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .logo h1 {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 1.8rem;
+        }
+
+        nav {
+            flex: 1;
+            margin: 0 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        nav ul::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        nav ul::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+
+        nav ul::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav a:hover, nav a.active {
+            background: var(--primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .balance {
+            background: rgba(106, 17, 203, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .balance:hover {
+            background: rgba(106, 17, 203, 0.4);
+        }
+
+        .balance span {
+            color: var(--warning);
+            font-weight: bold;
+        }
+
+        /* Profile Section */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            overflow: hidden;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+
+        .profile-info p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.5rem;
+        }
+
+        .tg-badge {
+            background: var(--telegram);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border-left: 4px solid var(--primary);
+        }
+
+        .stat-card h3 {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--light);
+        }
+
+        /* Deposit Section */
+        .deposit-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .deposit-method {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .deposit-method:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .method-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .method-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .telegram-method {
+            background: var(--telegram);
+        }
+
+        .crypto-method {
+            background: linear-gradient(45deg, #f7931a, #ff9900);
+        }
+
+        .amount-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .amount-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .amount-option:hover, .amount-option.selected {
+            border-color: var(--primary);
+            background: rgba(106, 17, 203, 0.2);
+        }
+
+        .amount-option .amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--warning);
+        }
+
+        .amount-option .rub {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.3rem;
+        }
+
+        .exchange-rate {
+            background: rgba(0, 184, 148, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        /* Payment Modal */
+        .payment-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+
+        .payment-content {
+            background: var(--dark);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid var(--primary);
+        }
+
+        .qr-container {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .crypto-address {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: monospace;
+            word-break: break-all;
+            margin: 1rem 0;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        /* Cases Grid */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .case-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .case-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.3);
+        }
+
+        .case-rare {
+            border-color: var(--warning);
+        }
+
+        .case-legendary {
+            border-color: var(--danger);
+            background: linear-gradient(45deg, rgba(231, 76, 60, 0.1), rgba(253, 203, 110, 0.1));
+        }
+
+        .case-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .case-price {
+            color: var(--warning);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        /* Opening Animation */
+        .opening-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            flex-direction: column;
+        }
+
+        .opening-items {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .skin-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            width: 150px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .skin-card.revealed {
+            border: 2px solid var(--success);
+            transform: scale(1.1);
+        }
+
+        .skin-rarity {
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            margin: 0.5rem 0;
+        }
+
+        .rarity-common { background: #636e72; }
+        .rarity-uncommon { background: #00b894; }
+        .rarity-rare { background: #0984e3; }
+        .rarity-epic { background: #6c5ce7; }
+        .rarity-legendary { background: #fd79a8; }
+
+        /* Case Battle */
+        .battle-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .battle-player {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .battle-player.active {
+            border: 2px solid var(--success);
+        }
+
+        /* Upgrade & Contracts */
+        .upgrade-container, .contract-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .inventory-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .inventory-item.selected {
+            border: 2px solid var(--success);
+            background: rgba(0, 184, 148, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .btn-telegram {
+            background: var(--telegram);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Daily Bonus */
+        .daily-bonus {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            z-index: 10000;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            nav {
+                margin: 0;
+                width: 100%;
+            }
+            
+            nav ul {
+                justify-content: flex-start;
+            }
+            
+            .user-info {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .battle-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .deposit-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-gem"></i>
+            <h1>Crystal Skins</h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="#" class="nav-link active" data-section="cases"><i class="fas fa-box-open"></i> Кейсы</a></li>
+                <li><a href="#" class="nav-link" data-section="battles"><i class="fas fa-fist-raised"></i> Битвы</a></li>
+                <li><a href="#" class="nav-link" data-section="upgrade"><i class="fas fa-arrow-up"></i> Апгрейд</a></li>
+                <li><a href="#" class="nav-link" data-section="contracts"><i class="fas fa-exchange-alt"></i> Контракты</a></li>
+                <li><a href="#" class="nav-link" data-section="inventory"><i class="fas fa-archive"></i> Инвентарь</a></li>
+                <li><a href="#" class="nav-link" data-section="profile"><i class="fas fa-user"></i> Профиль</a></li>
+                <li><a href="#" class="nav-link" data-section="deposit"><i class="fas fa-coins"></i> Пополнение</a></li>
+                <li><a href="#" class="nav-link" data-section="daily"><i class="fas fa-gift"></i> Бонусы</a></li>
+            </ul>
+        </nav>
+        
+        <div class="user-info">
+            <div class="balance" id="deposit-trigger">
+                <i class="fas fa-coins"></i> Баланс: <span id="balance">1000</span> CR
+                <small style="color: rgba(255,255,255,0.7); margin-left: 5px;">≈ <span id="balance-rub">100</span> ₽</small>
+            </div>
+            <div class="user" id="user-profile">
+                <i class="fas fa-user"></i> <span id="username">Загрузка...</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Cases Section -->
+        <section id="cases" class="section active">
+            <h2 class="section-title">Коллекция кейсов</h2>
+            <div class="cases-grid" id="cases-grid"></div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="section">
+            <div class="profile-header">
+                <div class="profile-avatar" id="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-info">
+                    <h2 id="profile-name">Загрузка...</h2>
+                    <p id="profile-id">ID: ---</p>
+                    <span class="tg-badge"><i class="fab fa-telegram"></i> Telegram User</span>
+                    <p style="margin-top: 1rem;">Дата регистрации: <span id="reg-date">--.--.----</span></p>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Статистика</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Всего открыто кейсов</h3>
+                    <p id="stats-cases">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Потрачено CR</h3>
+                    <p id="stats-spent">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Выиграно в битвах</h3>
+                    <p id="stats-battles-won">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Успешных апгрейдов</h3>
+                    <p id="stats-upgrades">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Лучший выигрыш</h3>
+                    <p id="stats-best-win">0 CR</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Общая стоимость инвентаря</h3>
+                    <p id="stats-inventory">0 CR</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deposit Section -->
+        <section id="deposit" class="section">
+            <h2 class="section-title">Пополнение баланса</h2>
+            
+            <div class="exchange-rate">
+                <h3><i class="fas fa-exchange-alt"></i> Курс обмена: 1 CR = 0.10 ₽</h3>
+                <p>100 CR = 10 ₽ | 1000 CR = 100 ₽ | 5000 CR = 500 ₽</p>
+            </div>
+            
+            <div class="deposit-options">
+                <!-- Telegram Stars -->
+                <div class="deposit-method">
+                    <div class="method-header">
+                        <div class="method-icon telegram-method">
+                            <i class="fab fa-telegram"></i>
+                        </div>
+                        <div>
+                            <h3>Telegram Stars ★</h3>
+                            <p>Мгновенное пополнение через Telegram</p>
+                        </div>
+                    </div>
+                    
+                    <div class="amount-grid" id="stars-amounts"></div>
+                    
+                    <button class="btn btn-telegram" id="deposit-telegram" style="width: 100%;">
+                        <i class="fab fa-telegram"></i> Пополнить через Telegram
+                    </button>
+                </div>
+                
+                <!-- Cryptocurrency -->
+                <div class="deposit-method">
+                    <div class="method-header">
+                        <div class="method-icon crypto-method">
+                            <i class="fab fa-bitcoin"></i>
+                        </div>
+                        <div>
+                            <h3>Криптовалюта</h3>
+                            <p>USDT (TRC20), Bitcoin, Ethereum</p>
+                        </div>
+                    </div>
+                    
+                    <div class="amount-grid" id="crypto-amounts"></div>
+                    
+                    <button class="btn btn-warning" id="deposit-crypto" style="width: 100%;">
+                        <i class="fab fa-bitcoin"></i> Пополнить криптовалютой
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Case Battles Section -->
+        <section id="battles" class="section">
+            <h2 class="section-title">Битвы кейсов</h2>
+            <div class="battle-container">
+                <div class="battle-player" id="player1">
+                    <h3>Игрок 1 (Вы)</h3>
+                    <div class="battle-inventory" id="battle-items-1"></div>
+                    <p>Сумма: <span id="battle-total-1">0</span> CR</p>
+                </div>
+                <div class="battle-player" id="player2">
+                    <h3>Игрок 2</h3>
+                    <div class="battle-inventory" id="battle-items-2"></div>
+                    <p>Сумма: <span id="battle-total-2">0</span> CR</p>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <button class="btn btn-primary" id="join-battle">Присоединиться к битве (50 CR)</button>
+                <button class="btn btn-success" id="start-battle" disabled>Начать битву</button>
+            </div>
+        </section>
+
+        <!-- Upgrade Section -->
+        <section id="upgrade" class="section">
+            <h2 class="section-title">Апгрейд скинов</h2>
+            <div class="upgrade-container">
+                <h3>Выберите скины для апгрейда:</h3>
+                <div class="inventory-grid" id="upgrade-items"></div>
+                <div id="upgrade-info" style="display: none;">
+                    <p>Выбранные скины: <span id="selected-value">0</span> CR</p>
+                    <p>Шанс успеха: <span id="upgrade-chance">0</span>%</p>
+                    <p>Выберите целевой скин:</p>
+                    <div id="target-skins"></div>
+                    <button class="btn btn-warning" id="perform-upgrade">Выполнить апгрейд</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contracts Section -->
+        <section id="contracts" class="section">
+            <h2 class="section-title">Контракты</h2>
+            <div class="contract-container">
+                <h3>Обменяйте 5 скинов на 1 более высокого ранга</h3>
+                <div class="inventory-grid" id="contract-items"></div>
+                <div id="contract-info" style="display: none;">
+                    <p>Выбрано скинов: <span id="selected-count">0</span>/5</p>
+                    <button class="btn btn-primary" id="perform-contract">Выполнить контракт</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inventory Section -->
+        <section id="inventory" class="section">
+            <h2 class="section-title">Ваш инвентарь</h2>
+            <div class="inventory-grid" id="inventory-grid"></div>
+            <p>Общая стоимость: <span id="inventory-total">0</span> CR ≈ <span id="inventory-rub">0</span> ₽</p>
+        </section>
+
+        <!-- Daily Bonus Section -->
+        <section id="daily" class="section">
+            <h2 class="section-title">Ежедневные бонусы</h2>
+            <div class="daily-bonus">
+                <h3><i class="fas fa-gift"></i> Ежедневный подарок</h3>
+                <p>Заходите каждый день, чтобы получать бонусы!</p>
+                <div id="bonus-timer">Следующий бонус через: 12:34:56</div>
+                <button class="btn btn-success" id="claim-bonus" style="margin-top: 1rem;">Получить бонус</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Case Opening Screen -->
+    <div class="opening-screen" id="opening-screen">
+        <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">Открытие кейса</h2>
+        <div class="opening-items" id="opening-items"></div>
+        <div style="margin-top: 2rem;">
+            <button class="btn btn-primary" id="reveal-skin">Открыть скин</button>
+            <button class="btn btn-danger" id="close-opening">Закрыть</button>
+        </div>
+        <div id="result-message" style="margin-top: 1rem; font-size: 1.2rem;"></div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="payment-modal" id="payment-modal">
+        <div class="payment-content">
+            <h2 style="margin-bottom: 1rem; text-align: center;">Пополнение баланса</h2>
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <p>Вы пополняете: <span id="payment-amount" style="color: var(--warning); font-weight: bold;">0</span> CR</p>
+                <p>К оплате: <span id="payment-price" style="color: var(--success); font-weight: bold;">0</span> ₽</p>
+            </div>
+            
+            <div id="telegram-payment" style="display: none;">
+                <p style="text-align: center; margin-bottom: 1rem;">
+                    Отправьте <span id="stars-count" style="color: var(--warning);">0</span> Stars через Telegram
+                </p>
+                <div style="text-align: center;">
+                    <div class="qr-container">
+                        <!-- В реальном приложении здесь будет QR-код -->
+                        <p style="color: black; padding: 1rem;">Telegram Stars оплата</p>
+                    </div>
+                </div>
+                <button class="btn btn-telegram" style="width: 100%; margin-top: 1rem;" id="confirm-telegram">
+                    <i class="fab fa-telegram"></i> Я оплатил
+                </button>
+            </div>
+            
+            <div id="crypto-payment" style="display: none;">
+                <p style="text-align: center; margin-bottom: 1rem;">
+                    Отправьте оплату на адрес:
+                </p>
+                <div class="crypto-address" id="crypto-address">
+                    0x742d35Cc6634C0532925a3b844Bc9e0F3B7f0d3e
+                </div>
+                <p style="text-align: center; margin: 1rem 0;">
+                    Сеть: <strong>TRC20 (TRON)</strong><br>
+                    Токен: <strong>USDT</strong>
+                </p>
+                <button class="btn btn-warning" style="width: 100%;" id="confirm-crypto">
+                    <i class="fas fa-check"></i> Я оплатил
+                </button>
+            </div>
+            
+            <button class="btn btn-danger" style="width: 100%; margin-top: 1rem;" id="cancel-payment">
+                Отмена
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">Уведомление</span>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    
+    <script>
+        // ========== КОНФИГУРАЦИЯ ==========
+        const CONFIG = {
+            EXCHANGE_RATE: 0.10, // 1 CR = 0.10 рубля (10 CR = 1 рубль)
+            TELEGRAM_STARS_RATE: 1, // 1 Star = 1 CR
+            DEPOSIT_AMOUNTS: [100, 500, 1000, 2500, 5000, 10000], // CR
+            TELEGRAM_BOT_TOKEN: 'YOUR_BOT_TOKEN', // В реальном приложении нужно получить у @BotFather
+            CRYPTO_ADDRESSES: {
+                USDT_TRC20: '0x742d35Cc6634C0532925a3b844Bc9e0F3B7f0d3e',
+                BTC: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
+                ETH: '0x742d35Cc6634C0532925a3b844Bc9e0F3B7f0d3e'
+            }
+        };
+
+        // Firebase конфигурация (замените на свою)
+        const firebaseConfig = {
+            apiKey: "AIzaSyYOUR_API_KEY",
+            authDomain: "crystal-skins.firebaseapp.com",
+            projectId: "crystal-skins",
+            storageBucket: "crystal-skins.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef123456"
+        };
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        let app;
+        let db;
+        let auth;
+        
+        try {
+            app = firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            auth = firebase.auth();
+        } catch (e) {
+            console.log("Firebase не подключен, используем локальное хранилище");
+        }
+
+        // ========== ТЕЛЕГРАМ ИНТЕГРАЦИЯ ==========
+        let tg = window.Telegram?.WebApp;
+        let userData = {
+            id: null,
+            username: 'Гость',
+            firstName: 'Игрок',
+            lastName: '',
+            photoUrl: null,
+            languageCode: 'ru'
+        };
+
+        // Инициализация Telegram Web App
+        function initTelegram() {
+            if (tg) {
+                tg.expand();
+                tg.enableClosingConfirmation();
+                
+                // Получаем данные пользователя
+                const tgUser = tg.initDataUnsafe?.user;
+                if (tgUser) {
+                    userData.id = tgUser.id;
+                    userData.username = tgUser.username || `user_${tgUser.id}`;
+                    userData.firstName = tgUser.first_name;
+                    userData.lastName = tgUser.last_name || '';
+                    userData.photoUrl = tgUser.photo_url;
+                    userData.languageCode = tgUser.language_code || 'ru';
+                    
+                    // Обновляем UI
+                    document.getElementById('username').textContent = userData.username;
+                    document.getElementById('profile-name').textContent = `${userData.firstName} ${userData.lastName}`.trim();
+                    document.getElementById('profile-id').textContent = `ID: ${userData.id}`;
+                    
+                    if (userData.photoUrl) {
+                        document.getElementById('profile-avatar').innerHTML = `<img src="${userData.photoUrl}" alt="${userData.username}">`;
+                    }
+                    
+                    // Загружаем данные пользователя из БД
+                    loadUserData();
+                }
+            } else {
+                // Демо режим если не в Telegram
+                userData.id = Date.now();
+                userData.username = `demo_${Math.floor(Math.random() * 10000)}`;
+                document.getElementById('username').textContent = userData.username;
+                document.getElementById('profile-name').textContent = 'Демо пользователь';
+                document.getElementById('profile-id').textContent = `ID: ${userData.id}`;
+                loadUserData();
+            }
+        }
+
+        // ========== ИГРОВЫЕ ДАННЫЕ ==========
+        const skinsData = [
+            { id: 1, name: "AK-47 | Redline", rarity: "uncommon", price: 50, color: "#00b894" },
+            { id: 2, name: "AWP | Dragon Lore", rarity: "legendary", price: 500, color: "#fd79a8" },
+            { id: 3, name: "M4A4 | Howl", rarity: "epic", price: 300, color: "#6c5ce7" },
+            { id: 4, name: "Glock-18 | Fade", rarity: "rare", price: 150, color: "#0984e3" },
+            { id: 5, name: "Knife | Karambit Crimson Web", rarity: "legendary", price: 600, color: "#fd79a8" },
+            { id: 6, name: "Desert Eagle | Blaze", rarity: "uncommon", price: 60, color: "#00b894" },
+            { id: 7, name: "USP-S | Orion", rarity: "common", price: 30, color: "#636e72" },
+            { id: 8, name: "AWP | Asiimov", rarity: "epic", price: 250, color: "#6c5ce7" },
+            { id: 9, name: "Knife | Butterfly Slaughter", rarity: "legendary", price: 700, color: "#fd79a8" },
+            { id: 10, name: "AK-47 | Fire Serpent", rarity: "rare", price: 200, color: "#0984e3" }
+        ];
+
+        const casesData = [
+            { id: 1, name: "Обычный кейс", price: 50, contains: [1, 4, 7, 10], color: "#636e72" },
+            { id: 2, name: "Редкий кейс", price: 100, contains: [1, 2, 4, 6, 8], color: "#0984e3" },
+            { id: 3, name: "Эпический кейс", price: 200, contains: [3, 5, 8, 9], color: "#6c5ce7" },
+            { id: 4, name: "Легендарный кейс", price: 500, contains: [2, 5, 9], color: "#fd79a8" }
+        ];
+
+        // ========== СОСТОЯНИЕ ИГРЫ ==========
+        let gameState = {
+            balance: 1000,
+            inventory: [],
+            stats: {
+                casesOpened: 0,
+                totalSpent: 0,
+                battlesWon: 0,
+                successfulUpgrades: 0,
+                bestWin: 0,
+                totalDeposited: 0,
+                lastCaseOpen: null,
+                registrationDate: new Date().toISOString()
+            },
+            dailyBonus: {
+                lastClaim: null,
+                streak: 0
+            }
+        };
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ ==========
+        function initApp() {
+            initTelegram();
+            loadGameState();
+            setupEventListeners();
+            updateUI();
+            generateDepositOptions();
+            startStatsSync();
+        }
+
+        // ========== СОХРАНЕНИЕ ДАННЫХ ==========
+        function saveGameState() {
+            const data = {
+                ...gameState,
+                userId: userData.id,
+                updatedAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem(`crystal_skins_${userData.id}`, JSON.stringify(data));
+            
+            // Синхронизация с Firestore если доступно
+            if (db) {
+                db.collection('users').doc(userData.id.toString()).set(data, { merge: true })
+                    .catch(err => console.error("Ошибка сохранения:", err));
+            }
+        }
+
+        function loadGameState() {
+            const saved = localStorage.getItem(`crystal_skins_${userData.id}`);
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                gameState = { ...gameState, ...parsed };
+            }
+            
+            // Если есть соединение с Firebase, загружаем оттуда
+            if (db) {
+                db.collection('users').doc(userData.id.toString()).get()
+                    .then(doc => {
+                        if (doc.exists) {
+                            const firebaseData = doc.data();
+                            gameState = { ...gameState, ...firebaseData };
+                            updateUI();
+                        }
+                    })
+                    .catch(err => console.error("Ошибка загрузки:", err));
+            }
+        }
+
+        function loadUserData() {
+            if (db) {
+                db.collection('users').doc(userData.id.toString()).get()
+                    .then(doc => {
+                        if (doc.exists) {
+                            const data = doc.data();
+                            document.getElementById('reg-date').textContent = 
+                                new Date(data.stats?.registrationDate || Date.now()).toLocaleDateString('ru-RU');
+                        }
+                    });
+            }
+        }
+
+        // ========== UI ОБНОВЛЕНИЯ ==========
+        function updateUI() {
+            // Обновляем баланс
+            document.getElementById('balance').textContent = gameState.balance;
+            document.getElementById('balance-rub').textContent = (gameState.balance * CONFIG.EXCHANGE_RATE).toFixed(2);
+            
+            // Обновляем статистику
+            document.getElementById('stats-cases').textContent = gameState.stats.casesOpened;
+            document.getElementById('stats-spent').textContent = gameState.stats.totalSpent;
+            document.getElementById('stats-battles-won').textContent = gameState.stats.battlesWon;
+            document.getElementById('stats-upgrades').textContent = gameState.stats.successfulUpgrades;
+            document.getElementById('stats-best-win').textContent = gameState.stats.bestWin + ' CR';
+            document.getElementById('stats-inventory').textContent = calculateInventoryValue() + ' CR';
+            
+            // Обновляем инвентарь
+            updateInventory();
+            
+            // Обновляем кейсы
+            generateCases();
+        }
+
+        function updateInventory() {
+            const container = document.getElementById('inventory-grid');
+            const totalEl = document.getElementById('inventory-total');
+            const totalRubEl = document.getElementById('inventory-rub');
+            
+            container.innerHTML = '';
+            let total = 0;
+            
+            gameState.inventory.forEach((item, index) => {
+                total += item.price;
+                const itemEl = document.createElement('div');
+                itemEl.className = 'inventory-item';
+                itemEl.innerHTML = `
+                    <div style="width: 100%; height: 100px; background: ${item.color}; border-radius: 5px; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-gem" style="font-size: 2rem;"></i>
+                    </div>
+                    <p style="font-size: 0.9rem;">${item.name}</p>
+                    <div class="skin-rarity rarity-${item.rarity}">${getRarityName(item.rarity)}</div>
+                    <p style="color: ${item.color}; font-weight: bold;">${item.price} CR</p>
+                `;
+                container.appendChild(itemEl);
+            });
+            
+            totalEl.textContent = total;
+            totalRubEl.textContent = (total * CONFIG.EXCHANGE_RATE).toFixed(2);
+        }
+
+        function calculateInventoryValue() {
+            return gameState.inventory.reduce((sum, item) => sum + item.price, 0);
+        }
+
+        // ========== ПОПОЛНЕНИЕ БАЛАНСА ==========
+        let selectedAmount = 0;
+        let selectedMethod = '';
+
+        function generateDepositOptions() {
+            const starsContainer = document.getElementById('stars-amounts');
+            const cryptoContainer = document.getElementById('crypto-amounts');
+            
+            starsContainer.innerHTML = '';
+            cryptoContainer.innerHTML = '';
+            
+            CONFIG.DEPOSIT_AMOUNTS.forEach(amount => {
+                const rubAmount = amount * CONFIG.EXCHANGE_RATE;
+                const starsAmount = amount * CONFIG.TELEGRAM_STARS_RATE;
+                
+                // Telegram Stars option
+                const starsOption = document.createElement('div');
+                starsOption.className = 'amount-option';
+                starsOption.dataset.amount = amount;
+                starsOption.innerHTML = `
+                    <div class="amount">${amount} CR</div>
+                    <div class="rub">${rubAmount} ₽ / ${starsAmount} ★</div>
+                `;
+                starsOption.addEventListener('click', () => selectDepositOption(amount, 'telegram'));
+                starsContainer.appendChild(starsOption);
+                
+                // Crypto option
+                const cryptoOption = document.createElement('div');
+                cryptoOption.className = 'amount-option';
+                cryptoOption.dataset.amount = amount;
+                cryptoOption.innerHTML = `
+                    <div class="amount">${amount} CR</div>
+                    <div class="rub">${rubAmount} ₽</div>
+                `;
+                cryptoOption.addEventListener('click', () => selectDepositOption(amount, 'crypto'));
+                cryptoContainer.appendChild(cryptoOption);
+            });
+        }
+
+        function selectDepositOption(amount, method) {
+            selectedAmount = amount;
+            selectedMethod = method;
+            
+            // Сбрасываем все выделения
+            document.querySelectorAll('.amount-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Выделяем выбранный
+            document.querySelectorAll(`[data-amount="${amount}"]`).forEach(opt => {
+                opt.classList.add('selected');
+            });
+        }
+
+        function showPaymentModal() {
+            if (selectedAmount === 0) {
+                showNotification('Выберите сумму для пополнения', 'warning');
+                return;
+            }
+            
+            const rubAmount = selectedAmount * CONFIG.EXCHANGE_RATE;
+            document.getElementById('payment-amount').textContent = selectedAmount;
+            document.getElementById('payment-price').textContent = rubAmount;
+            
+            if (selectedMethod === 'telegram') {
+                const starsAmount = selectedAmount * CONFIG.TELEGRAM_STARS_RATE;
+                document.getElementById('stars-count').textContent = starsAmount;
+                document.getElementById('telegram-payment').style.display = 'block';
+                document.getElementById('crypto-payment').style.display = 'none';
+            } else {
+                document.getElementById('crypto-payment').style.display = 'block';
+                document.getElementById('telegram-payment').style.display = 'none';
+            }
+            
+            document.getElementById('payment-modal').style.display = 'flex';
+        }
+
+        function processPayment() {
+            // В реальном приложении здесь будет интеграция с платежными системами
+            // Сейчас эмулируем успешное пополнение
+            
+            gameState.balance += selectedAmount;
+            gameState.stats.totalDeposited += selectedAmount;
+            
+            saveGameState();
+            updateUI();
+            
+            showNotification(`Баланс пополнен на ${selectedAmount} CR!`, 'success');
+            
+            // Закрываем модальное окно
+            document.getElementById('payment-modal').style.display = 'none';
+            
+            // В реальном приложении для Telegram Stars:
+            // if (tg && selectedMethod === 'telegram') {
+            //     tg.sendData(JSON.stringify({
+            //         type: 'deposit',
+            //         amount: selectedAmount * CONFIG.TELEGRAM_STARS_RATE
+            //     }));
+            // }
+        }
+
+        // ========== ИГРОВЫЕ МЕХАНИКИ ==========
+        function generateCases() {
+            const container = document.getElementById('cases-grid');
+            container.innerHTML = '';
+            
+            casesData.forEach(caseItem => {
+                const caseCard = document.createElement('div');
+                caseCard.className = 'case-card';
+                if (caseItem.price >= 500) caseCard.classList.add('case-legendary');
+                else if (caseItem.price >= 200) caseCard.classList.add('case-rare');
+                
+                caseCard.innerHTML = `
+                    <div class="case-image" style="background: linear-gradient(45deg, ${caseItem.color}, #2575fc)">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3>${caseItem.name}</h3>
+                    <p>Содержит ${caseItem.contains.length} скинов</p>
+                    <div class="case-price">${caseItem.price} CR</div>
+                    <button class="btn btn-primary open-case" data-case-id="${caseItem.id}">
+                        Открыть за ${caseItem.price} CR
+                    </button>
+                `;
+                
+                caseCard.querySelector('.open-case').addEventListener('click', () => {
+                    openCase(caseItem.id);
+                });
+                
+                container.appendChild(caseCard);
+            });
+        }
+
+        function openCase(caseId) {
+            const caseItem = casesData.find(c => c.id === caseId);
+            if (!caseItem) return;
+            
+            if (gameState.balance < caseItem.price) {
+                showNotification('Недостаточно средств!', 'error');
+                return;
+            }
+            
+            // Списываем баланс
+            gameState.balance -= caseItem.price;
+            gameState.stats.casesOpened++;
+            gameState.stats.totalSpent += caseItem.price;
+            gameState.stats.lastCaseOpen = new Date().toISOString();
+            
+            // Показываем анимацию открытия
+            showOpeningAnimation(caseItem);
+            
+            saveGameState();
+            updateUI();
+        }
+
+        function showOpeningAnimation(caseItem) {
+            const screen = document.getElementById('opening-screen');
+            const itemsContainer = document.getElementById('opening-items');
+            
+            screen.style.display = 'flex';
+            itemsContainer.innerHTML = '';
+            
+            // Создаем 3 карточки
+            for (let i = 0; i < 3; i++) {
+                const card = document.createElement('div');
+                card.className = 'skin-card';
+                card.innerHTML = `
+                    <div style="width: 100%; height: 100px; background: #333; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-question" style="font-size: 2rem;"></i>
+                    </div>
+                    <p>???</p>
+                    <div class="skin-rarity rarity-common">Загрузка...</div>
+                `;
+                itemsContainer.appendChild(card);
+            }
+            
+            // Настраиваем кнопку открытия
+            const revealBtn = document.getElementById('reveal-skin');
+            revealBtn.disabled = false;
+            revealBtn.onclick = () => revealSkin(caseItem);
+            
+            document.getElementById('result-message').innerHTML = '';
+        }
+
+        function revealSkin(caseItem) {
+            // Случайный выбор скина из кейса
+            const skinId = caseItem.contains[Math.floor(Math.random() * caseItem.contains.length)];
+            const skin = skinsData.find(s => s.id === skinId);
+            
+            // Добавляем в инвентарь
+            gameState.inventory.push({
+                ...skin,
+                obtained: new Date().toISOString(),
+                caseId: caseItem.id
+            });
+            
+            // Обновляем лучший выигрыш если нужно
+            if (skin.price > gameState.stats.bestWin) {
+                gameState.stats.bestWin = skin.price;
+            }
+            
+            // Показываем скин
+            const middleCard = document.getElementById('opening-items').children[1];
+            middleCard.innerHTML = `
+                <div style="width: 100%; height: 100px; background: ${skin.color}; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-gem" style="font-size: 2rem;"></i>
+                </div>
+                <p>${skin.name}</p>
+                <div class="skin-rarity rarity-${skin.rarity}">${getRarityName(skin.rarity)}</div>
+                <p style="color: ${skin.color}; font-weight: bold;">${skin.price} CR</p>
+            `;
+            middleCard.classList.add('revealed');
+            
+            // Показываем результат
+            document.getElementById('result-message').innerHTML = `
+                <p style="color: ${skin.color}; font-size: 1.5rem; font-weight: bold;">
+                    Поздравляем! Вы получили ${skin.name}!
+                </p>
+                <p>Стоимость: ${skin.price} CR (${(skin.price * CONFIG.EXCHANGE_RATE).toFixed(2)} ₽)</p>
+            `;
+            
+            // Отключаем кнопку открытия
+            document.getElementById('reveal-skin').disabled = true;
+            
+            saveGameState();
+            updateUI();
+        }
+
+        // ========== УТИЛИТЫ ==========
+        function getRarityName(rarity) {
+            const names = {
+                'common': 'Обычный',
+                'uncommon': 'Необычный',
+                'rare': 'Редкий',
+                'epic': 'Эпический',
+                'legendary': 'Легендарный'
+            };
+            return names[rarity] || rarity;
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const text = document.getElementById('notification-text');
+            
+            // Устанавливаем цвет в зависимости от типа
+            notification.style.background = type === 'success' ? '#00b894' : 
+                                          type === 'error' ? '#e74c3c' : 
+                                          type === 'warning' ? '#fdcb6e' : '#0984e3';
+            
+            text.textContent = message;
+            notification.style.display = 'flex';
+            
+            // Автоматически скрываем через 3 секунды
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // ========== СИНХРОНИЗАЦИЯ С СЕРВЕРОМ ==========
+        function startStatsSync() {
+            // Каждые 30 секунд синхронизируем статистику с сервером
+            setInterval(() => {
+                if (db) {
+                    db.collection('users').doc(userData.id.toString()).set({
+                        ...gameState,
+                        lastOnline: new Date().toISOString()
+                    }, { merge: true });
+                }
+            }, 30000);
+        }
+
+        // ========== НАСТРОЙКА СОБЫТИЙ ==========
+        function setupEventListeners() {
+            // Навигация
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = link.getAttribute('data-section');
+                    
+                    // Обновляем активную ссылку
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // Показываем выбранную секцию
+                    document.querySelectorAll('.section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    document.getElementById(sectionId).classList.add('active');
+                });
+            });
+            
+            // Пополнение баланса
+            document.getElementById('deposit-trigger').addEventListener('click', () => {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                document.querySelector('[data-section="deposit"]').classList.add('active');
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.getElementById('deposit').classList.add('active');
+            });
+            
+            // Кнопки пополнения
+            document.getElementById('deposit-telegram').addEventListener('click', () => {
+                if (selectedAmount === 0) {
+                    selectDepositOption(CONFIG.DEPOSIT_AMOUNTS[0], 'telegram');
+                }
+                showPaymentModal();
+            });
+            
+            document.getElementById('deposit-crypto').addEventListener('click', () => {
+                if (selectedAmount === 0) {
+                    selectDepositOption(CONFIG.DEPOSIT_AMOUNTS[0], 'crypto');
+                }
+                showPaymentModal();
+            });
+            
+            // Подтверждение оплаты
+            document.getElementById('confirm-telegram').addEventListener('click', processPayment);
+            document.getElementById('confirm-crypto').addEventListener('click', processPayment);
+            
+            // Отмена оплаты
+            document.getElementById('cancel-payment').addEventListener('click', () => {
+                document.getElementById('payment-modal').style.display = 'none';
+            });
+            
+            // Закрытие окна открытия кейса
+            document.getElementById('close-opening').addEventListener('click', () => {
+                document.getElementById('opening-screen').style.display = 'none';
+            });
+            
+            // Ежедневный бонус
+            document.getElementById('claim-bonus').addEventListener('click', () => {
+                const today = new Date().toDateString();
+                const lastClaim = gameState.dailyBonus.lastClaim;
+                
+                if (lastClaim === today) {
+                    showNotification('Вы уже получили бонус сегодня!', 'warning');
+                    return;
+                }
+                
+                const bonus = 50 + Math.floor(Math.random() * 50); // 50-100 CR
+                gameState.balance += bonus;
+                gameState.dailyBonus.lastClaim = today;
+                gameState.dailyBonus.streak = lastClaim ? gameState.dailyBonus.streak + 1 : 1;
+                
+                saveGameState();
+                updateUI();
+                
+                showNotification(`Получен ежедневный бонус: ${bonus} CR! (серия: ${gameState.dailyBonus.streak})`, 'success');
+            });
+        }
+
+        // ========== ЗАПУСК ПРИЛОЖЕНИЯ ==========
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
