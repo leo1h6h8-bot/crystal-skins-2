@@ -1,0 +1,3628 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal Skins - Виртуальные кейсы CS2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f8f9fa;
+            --success: #00b894;
+            --danger: #e74c3c;
+            --warning: #fdcb6e;
+            --info: #0984e3;
+            --telegram: #3390ec;
+            --crash: #ff6b6b;
+            --admin: #ff9f43;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        /* Стили для окна авторизации */
+        .auth-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .auth-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 400px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .auth-logo i {
+            color: var(--primary);
+            font-size: 2.5rem;
+        }
+
+        .auth-logo h1 {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2.2rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 0.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 0.8rem;
+            background: transparent;
+            border: none;
+            color: var(--light);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .auth-tab.active {
+            background: var(--primary);
+        }
+
+        .auth-form {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .auth-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .auth-form input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .auth-error {
+            color: var(--danger);
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+        }
+
+        .auth-success {
+            color: var(--success);
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: rgba(0, 184, 148, 0.1);
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+        }
+
+        /* Основные стили платформы */
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo i {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .logo h1 {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 1.8rem;
+        }
+
+        nav {
+            flex: 1;
+            margin: 0 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav a:hover, nav a.active {
+            background: var(--primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .balance {
+            background: rgba(106, 17, 203, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .balance:hover {
+            background: rgba(106, 17, 203, 0.4);
+        }
+
+        .balance span {
+            color: var(--warning);
+            font-weight: bold;
+        }
+
+        .user-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .username-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 5px;
+            padding: 0.5rem;
+            color: white;
+            width: 150px;
+        }
+
+        .admin-badge {
+            background: var(--admin);
+            color: var(--dark);
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: none;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .case-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .case-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.3);
+        }
+
+        .case-card.free {
+            border: 2px solid var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 184, 148, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 184, 148, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 184, 148, 0); }
+        }
+
+        .case-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .case-price {
+            color: var(--warning);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .crash-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .crash-timer {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .timer {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--success);
+            text-shadow: 0 0 10px rgba(0, 184, 148, 0.5);
+            margin: 1rem 0;
+        }
+
+        .timer-phase {
+            font-size: 1.2rem;
+            color: var(--light);
+            margin-bottom: 0.5rem;
+        }
+
+        .crash-game-area {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .crash-graph {
+            width: 100%;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crash-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: var(--success);
+            transform-origin: 0 0;
+            transform: scaleX(0);
+            transition: transform 0.1s linear;
+        }
+
+        .crash-multiplier {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--success);
+            text-shadow: 0 0 10px rgba(0, 184, 148, 0.5);
+        }
+
+        .crash-bets-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .bet-controls {
+            margin-bottom: 1.5rem;
+        }
+
+        .bet-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 1rem;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .quick-bets {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .active-bets {
+            margin-top: 1.5rem;
+        }
+
+        .bet-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+
+        .bet-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .crash-history {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .crash-history-item {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 60px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .crash-history-win {
+            background: var(--success);
+        }
+
+        .crash-history-lose {
+            background: var(--danger);
+        }
+
+        .upgrade-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .upgrade-wheels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .wheel-container {
+            text-align: center;
+        }
+
+        .wheel-wrapper {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 1rem;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            transition: transform 4s cubic-bezier(0.2, 0.8, 0.3, 1);
+            border: 5px solid var(--dark);
+            transform: rotate(0deg);
+        }
+
+        .wheel-segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: 100% 100%;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 20px;
+            font-weight: bold;
+            color: white;
+            font-size: 0.8rem;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            z-index: 10;
+        }
+
+        .wheel-success {
+            background: var(--success);
+        }
+
+        .wheel-fail {
+            background: var(--danger);
+        }
+
+        .multiplier-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            justify-content: center;
+        }
+
+        .multiplier-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .multiplier-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .multiplier-btn:hover:not(.active) {
+            background: rgba(106, 17, 203, 0.3);
+        }
+
+        .admin-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 1rem;
+        }
+
+        .admin-tab {
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--light);
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .admin-tab.active {
+            background: var(--primary);
+        }
+
+        .admin-tab:hover:not(.active) {
+            background: rgba(106, 17, 203, 0.3);
+        }
+
+        .admin-content {
+            display: none;
+        }
+
+        .admin-content.active {
+            display: block;
+        }
+
+        .requests-list {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .request-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .request-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .status-completed {
+            background: var(--success);
+            color: white;
+        }
+
+        .status-rejected {
+            background: var(--danger);
+            color: white;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .case-slider-container {
+            width: 90%;
+            max-width: 1000px;
+            height: 300px;
+            margin: 2rem auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .case-slider-track {
+            display: flex;
+            position: absolute;
+            right: 0;
+            transition: transform 5s cubic-bezier(0.2, 0.8, 0.3, 1);
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .case-slider-item {
+            flex: 0 0 180px;
+            height: 260px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .case-slider-item.selected {
+            transform: scale(1.1);
+            border: 3px solid var(--success);
+            box-shadow: 0 0 20px rgba(0, 184, 148, 0.5);
+            z-index: 2;
+        }
+
+        .case-slider-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 280px;
+            border: 3px solid var(--primary);
+            border-radius: 10px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .withdraw-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .withdraw-rules {
+            background: rgba(0, 184, 148, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .contracts-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .contract-rules {
+            background: rgba(0, 184, 148, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .deposit-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .deposit-method {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .deposit-method:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .deposit-method i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .crypto-icon {
+            color: #f7931a;
+        }
+
+        .rub-icon {
+            color: #00b894;
+        }
+
+        .deposit-amounts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .tasks-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .task-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .task-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-progress {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            transition: width 0.3s;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .inventory-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            position: relative;
+        }
+
+        .inventory-item.selectable {
+            cursor: pointer;
+        }
+
+        .inventory-item.selected {
+            border: 2px solid var(--success);
+            background: rgba(0, 184, 148, 0.1);
+        }
+
+        .skin-checkbox {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .skin-checkbox.selected {
+            background: var(--success);
+        }
+
+        .skin-actions {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .skin-action-btn {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .skin-action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .sell-btn {
+            color: var(--warning);
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .btn-telegram {
+            background: var(--telegram);
+            color: white;
+        }
+
+        .btn-crash {
+            background: var(--crash);
+            color: white;
+        }
+
+        .btn-admin {
+            background: var(--admin);
+            color: var(--dark);
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .opening-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            flex-direction: column;
+        }
+
+        .skin-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            width: 150px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .skin-card.revealed {
+            border: 2px solid var(--success);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 184, 148, 0.5);
+        }
+
+        .skin-rarity {
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            margin: 0.5rem 0;
+        }
+
+        .rarity-common { background: #636e72; }
+        .rarity-uncommon { background: #00b894; }
+        .rarity-rare { background: #0984e3; }
+        .rarity-epic { background: #6c5ce7; }
+        .rarity-legendary { background: #fd79a8; }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+
+        .modal-content {
+            background: var(--dark);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid var(--primary);
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+            z-index: 10000;
+            animation: slideIn 0.3s;
+        }
+
+        .notification.error {
+            background: var(--danger);
+        }
+
+        .notification.warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Стили для бухгалтерии */
+        .accounting-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .accounting-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0 2rem;
+        }
+
+        .accounting-stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        .stat-positive {
+            color: var(--success);
+        }
+
+        .stat-negative {
+            color: var(--danger);
+        }
+
+        .stat-neutral {
+            color: var(--warning);
+        }
+
+        .transaction-history {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            align-items: center;
+        }
+
+        .transaction-success {
+            border-left: 4px solid var(--success);
+        }
+
+        .transaction-failed {
+            border-left: 4px solid var(--danger);
+        }
+
+        .transaction-pending {
+            border-left: 4px solid var(--warning);
+        }
+
+        /* Стили для отображения пользователей */
+        .users-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .users-table th, .users-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .users-table th {
+            background: rgba(106, 17, 203, 0.2);
+            color: var(--light);
+        }
+
+        .users-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .user-admin-badge {
+            background: var(--admin);
+            color: var(--dark);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            nav {
+                margin: 0;
+                width: 100%;
+            }
+            
+            nav ul {
+                justify-content: flex-start;
+            }
+            
+            .user-info {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .crash-game-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .upgrade-wheels {
+                grid-template-columns: 1fr;
+            }
+            
+            .wheel-wrapper {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .case-slider-container {
+                height: 200px;
+            }
+            
+            .case-slider-item {
+                flex: 0 0 120px;
+                height: 170px;
+            }
+            
+            .deposit-methods {
+                grid-template-columns: 1fr;
+            }
+            
+            .deposit-amounts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .accounting-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .users-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Окно авторизации -->
+    <div class="auth-container" id="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-gem"></i>
+                    <h1>Crystal Skins</h1>
+                </div>
+                <p>Виртуальные кейсы CS2 с выводом скинов</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-form="login-form">Вход</button>
+                <button class="auth-tab" data-form="register-form">Регистрация</button>
+            </div>
+            
+            <div id="login-form" class="auth-form active">
+                <div class="auth-error" id="login-error"></div>
+                <input type="text" id="login-username" placeholder="Имя пользователя" required>
+                <input type="password" id="login-password" placeholder="Пароль" required>
+                <button class="btn btn-primary" onclick="login()" style="width: 100%;">
+                    <i class="fas fa-sign-in-alt"></i> Войти
+                </button>
+            </div>
+            
+            <div id="register-form" class="auth-form">
+                <div class="auth-error" id="register-error"></div>
+                <input type="text" id="register-username" placeholder="Имя пользователя" required>
+                <input type="password" id="register-password" placeholder="Пароль" required>
+                <input type="password" id="register-confirm" placeholder="Подтвердите пароль" required>
+                <button class="btn btn-success" onclick="register()" style="width: 100%;">
+                    <i class="fas fa-user-plus"></i> Зарегистрироваться
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной интерфейс -->
+    <header id="main-header">
+        <div class="logo">
+            <i class="fas fa-gem"></i>
+            <h1>Crystal Skins</h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="#" class="nav-link active" data-section="cases"><i class="fas fa-box-open"></i> Кейсы</a></li>
+                <li><a href="#" class="nav-link" data-section="crash"><i class="fas fa-chart-line"></i> КРАШ</a></li>
+                <li><a href="#" class="nav-link" data-section="upgrade"><i class="fas fa-sync-alt"></i> Апгрейд</a></li>
+                <li><a href="#" class="nav-link" data-section="contracts"><i class="fas fa-exchange-alt"></i> Контракты</a></li>
+                <li><a href="#" class="nav-link" data-section="inventory"><i class="fas fa-archive"></i> Инвентарь</a></li>
+                <li><a href="#" class="nav-link" data-section="deposit"><i class="fas fa-credit-card"></i> Пополнение</a></li>
+                <li><a href="#" class="nav-link" data-section="tasks"><i class="fas fa-tasks"></i> Задания</a></li>
+                <li><a href="#" class="nav-link" data-section="withdraw"><i class="fas fa-exchange-alt"></i> Вывод скинов</a></li>
+                <li id="admin-nav" style="display: none;"><a href="#" class="nav-link" data-section="admin"><i class="fas fa-crown"></i> Админ-панель</a></li>
+            </ul>
+        </nav>
+        
+        <div class="user-info">
+            <div class="user-controls">
+                <div id="admin-badge" class="admin-badge" style="display: none;">АДМИН</div>
+                <button class="btn btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Выход</button>
+            </div>
+            <div class="balance" onclick="showDepositSection()">
+                <i class="fas fa-coins"></i> Баланс: <span id="balance">0</span> CR
+            </div>
+        </div>
+    </header>
+
+    <div class="container" id="main-container">
+        <section id="cases" class="section active">
+            <h2 class="section-title">Коллекция кейсов</h2>
+            <div class="cases-grid" id="cases-grid"></div>
+        </section>
+
+        <section id="crash" class="section">
+            <h2 class="section-title">Игра КРАШ</h2>
+            <div class="crash-container">
+                <div class="crash-timer">
+                    <div class="timer-phase" id="timer-phase">Ожидание старта</div>
+                    <div class="timer" id="crash-timer">--</div>
+                    <div id="timer-message">До начала приема ставок</div>
+                </div>
+                
+                <div class="crash-game-area">
+                    <div class="crash-graph" id="crash-graph">
+                        <div class="crash-line" id="crash-line"></div>
+                        <div class="crash-multiplier" id="crash-multiplier">1.00x</div>
+                    </div>
+                    
+                    <div class="crash-bets-panel">
+                        <div class="bet-controls">
+                            <input type="number" class="bet-input" id="crash-bet-amount" value="10000" min="100" max="1000000">
+                            <div class="quick-bets">
+                                <button class="btn" onclick="setBetAmount(10000)">10K</button>
+                                <button class="btn" onclick="setBetAmount(50000)">50K</button>
+                                <button class="btn" onclick="setBetAmount(100000)">100K</button>
+                                <button class="btn" onclick="setBetAmount(500000)">500K</button>
+                                <button class="btn" onclick="setBetAmount(1000000)">1M</button>
+                                <button class="btn" onclick="setBetAmount(5000000)">5M</button>
+                            </div>
+                            <button class="btn btn-success" id="crash-place-bet" style="width: 100%;" disabled>Ожидание</button>
+                        </div>
+                        
+                        <div class="active-bets">
+                            <h4>Ваши ставки:</h4>
+                            <div class="bet-list" id="active-bets"></div>
+                        </div>
+                        
+                        <div style="margin-top: 1rem;">
+                            <button class="btn btn-danger" id="crash-cash-out" disabled style="width: 100%;">Забрать все</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; text-align: center;">
+                    <h4>История крашей</h4>
+                    <div class="crash-history" id="crash-history"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="upgrade" class="section">
+            <h2 class="section-title">Апгрейд скинов</h2>
+            <div class="upgrade-container">
+                <h3 style="text-align: center; margin-bottom: 2rem;">Выберите скины для апгрейда (2-5 скинов)</h3>
+                
+                <div class="inventory-grid" id="upgrade-items"></div>
+                
+                <div id="upgrade-controls" style="display: none;">
+                    <div class="selected-skins-upgrade" id="selected-skins-upgrade"></div>
+                    
+                    <div class="upgrade-wheels">
+                        <div class="wheel-container">
+                            <h4>Колесо удачи</h4>
+                            <div class="wheel-wrapper">
+                                <div class="wheel-pointer"></div>
+                                <div class="wheel" id="upgrade-wheel"></div>
+                            </div>
+                            <p>Шанс успеха: <span id="upgrade-success-chance">0</span>%</p>
+                        </div>
+                        
+                        <div style="display: flex; flex-direction: column; justify-content: center; gap: 1rem;">
+                            <div>
+                                <p>Общая стоимость: <span id="upgrade-total-value">0</span> CR</p>
+                                <p>Выберите множитель:</p>
+                                <div class="multiplier-selector">
+                                    <button class="multiplier-btn" data-multiplier="2">2x</button>
+                                    <button class="multiplier-btn" data-multiplier="3">3x</button>
+                                    <button class="multiplier-btn" data-multiplier="5">5x</button>
+                                    <button class="multiplier-btn" data-multiplier="10">10x</button>
+                                </div>
+                                <p>Возможный скин: <span id="upgrade-possible-skin">0</span> CR</p>
+                            </div>
+                            <button class="btn btn-warning" id="spin-wheel">Крутить рулетку</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contracts" class="section">
+            <h2 class="section-title">Контракты</h2>
+            <div class="contracts-container">
+                <div class="contract-rules">
+                    <h4><i class="fas fa-info-circle"></i> Правила контракта</h4>
+                    <p>• Сдайте от 3 до 10 скинов</p>
+                    <p>• Получите 1 случайный скин</p>
+                    <p>• Стоимость нового скина: от 50% до 200% от общей стоимости</p>
+                    <p>• Чем больше скинов сдаете, тем выше шанс на дорогой скин</p>
+                </div>
+                
+                <div class="inventory-grid" id="contract-items"></div>
+                
+                <div id="contract-controls" style="display: none; text-align: center; margin-top: 2rem;">
+                    <p>Выбрано скинов: <span id="selected-contract-count">0</span></p>
+                    <p>Общая стоимость: <span id="contract-total-value">0</span> CR</p>
+                    <p>Возможный скин: <span id="contract-possible-range">0-0</span> CR</p>
+                    <button class="btn btn-primary" id="perform-contract">Выполнить контракт</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="inventory" class="section">
+            <h2 class="section-title">Ваш инвентарь</h2>
+            <div class="inventory-grid" id="inventory-grid"></div>
+            <p>Общая стоимость: <span id="inventory-total">0</span> CR</p>
+            <p>Всего предметов: <span id="inventory-count">0</span></p>
+        </section>
+
+        <section id="deposit" class="section">
+            <h2 class="section-title">Пополнение баланса</h2>
+            <div class="deposit-container">
+                <div class="deposit-methods">
+                    <div class="deposit-method">
+                        <i class="fab fa-bitcoin crypto-icon"></i>
+                        <h3>Криптовалюта (USDT)</h3>
+                        <p>Пополнение через TON (TRC-20)</p>
+                        <p><small>1 CR = 0.01 рубля (мин. 50 руб.)</small></p>
+                        <div class="deposit-amounts">
+                            <button class="btn" onclick="selectCryptoAmount(50000)">50K CR</button>
+                            <button class="btn" onclick="selectCryptoAmount(100000)">100K CR</button>
+                            <button class="btn" onclick="selectCryptoAmount(500000)">500K CR</button>
+                            <button class="btn" onclick="selectCryptoAmount(1000000)">1M CR</button>
+                            <button class="btn" onclick="selectCryptoAmount(5000000)">5M CR</button>
+                            <button class="btn" onclick="selectCryptoAmount(10000000)">10M CR</button>
+                        </div>
+                        
+                        <div id="crypto-payment" style="display: none; margin-top: 1rem;">
+                            <h4>Адрес для перевода USDT (TON):</h4>
+                            <p id="crypto-address-text" style="font-family: monospace; font-size: 1rem; margin: 0.5rem 0; padding: 0.5rem; background: rgba(0,0,0,0.3); border-radius: 5px; word-break: break-all;">UQB-1BfZbmWKW4X0br3HAJA24N-l-IUNweiYbdRzuSgBSbEQ</p>
+                            <p>Сумма: <span id="crypto-amount">0</span> USDT</p>
+                            <p>Получите: <span id="crypto-receive">0</span> CR</p>
+                            <p><small>В комментарии к платежу укажите ваш никнейм: <span id="crypto-nickname"></span></small></p>
+                            <div style="margin-top: 1rem;">
+                                <button class="btn btn-success" onclick="copyCryptoAddress()">Скопировать адрес</button>
+                                <button class="btn btn-primary" onclick="submitDepositRequest('crypto')">Я оплатил</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="deposit-method">
+                        <i class="fas fa-ruble-sign rub-icon"></i>
+                        <h3>Рубли РФ</h3>
+                        <p>Перевод на банковскую карту</p>
+                        <p><small>1 CR = 0.01 рубля (мин. 50 руб.)</small></p>
+                        <div class="deposit-amounts">
+                            <button class="btn" onclick="selectRubAmount(50000)">50K CR</button>
+                            <button class="btn" onclick="selectRubAmount(100000)">100K CR</button>
+                            <button class="btn" onclick="selectRubAmount(500000)">500K CR</button>
+                            <button class="btn" onclick="selectRubAmount(1000000)">1M CR</button>
+                            <button class="btn" onclick="selectRubAmount(2000000)">2M CR</button>
+                            <button class="btn" onclick="selectRubAmount(5000000)">5M CR</button>
+                        </div>
+                        
+                        <div id="rub-payment" style="display: none; margin-top: 1rem;">
+                            <h4>Перевод на банковскую карту</h4>
+                            <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 10px; margin: 0.5rem 0;">
+                                <p style="font-weight: bold; color: var(--warning);">Озон Банк</p>
+                                <p>Номер: <span style="font-family: monospace;">+79522809573</span></p>
+                                <p>Получатель: Марк.Г</p>
+                                <p>Сумма: <span id="rub-amount">0</span> рублей</p>
+                            </div>
+                            <p><small>В комментарии к платежу укажите ваш никнейм: <span id="rub-nickname"></span></small></p>
+                            <div style="margin-top: 1rem;">
+                                <button class="btn btn-success" onclick="copyRubDetails()">Скопировать реквизиты</button>
+                                <button class="btn btn-primary" onclick="submitDepositRequest('rub')">Я оплатил</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="deposit-success" style="display: none; text-align: center; margin-top: 2rem; padding: 1.5rem; background: rgba(0,184,148,0.1); border-radius: 10px;">
+                    <h4><i class="fas fa-check-circle"></i> Заявка отправлена!</h4>
+                    <p>Ожидайте подтверждения администратора</p>
+                    <p>Обычно это занимает до 15 минут</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tasks" class="section">
+            <h2 class="section-title">Ежедневные задания</h2>
+            <div class="tasks-container">
+                <div class="task-list" id="tasks-list"></div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <p>До обновления заданий: <span id="tasks-reset-timer">24:00:00</span></p>
+                    <button class="btn btn-primary" onclick="claimAllTasks()">Забрать все награды</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="withdraw" class="section">
+            <h2 class="section-title">Вывод скинов</h2>
+            <div class="withdraw-container">
+                <div class="withdraw-rules">
+                    <h4><i class="fas fa-info-circle"></i> Правила вывода</h4>
+                    <p>• Вывод осуществляется на аккаунт Steam через трейд предложение</p>
+                    <p>• Для вывода нужна действительная трейд ссылка Steam</p>
+                    <p>• Скин будет отправлен в течение 24 часов после заявки</p>
+                    <p>• Вывод скина БЕСПЛАТНЫЙ (без комиссии)</p>
+                </div>
+                
+                <div class="inventory-grid" id="withdraw-items"></div>
+                
+                <div id="withdraw-controls" style="display: none; text-align: center; margin-top: 2rem;">
+                    <div id="selected-skin-withdraw"></div>
+                    
+                    <div style="background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+                        <p>Стоимость скина: <span id="withdraw-skin-price">0</span> CR</p>
+                        <p style="color: var(--success); font-size: 1.2rem; font-weight: bold;">Вывод скина - БЕСПЛАТНО!</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <label for="trade-link">Ваша трейд ссылка Steam:</label>
+                        <input type="text" id="trade-link" class="bet-input" placeholder="https://steamcommunity.com/tradeoffer/new/?partner=..." style="width: 100%; margin-top: 0.5rem;">
+                        <small style="display: block; margin-top: 0.5rem; color: #aaa;">Ваша трейд ссылка должна быть действительна и доступна для отправки предложений</small>
+                    </div>
+                    <button class="btn btn-success" id="submit-withdraw">Отправить заявку на вывод</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="admin" class="section">
+            <h2 class="section-title">Админ-панель</h2>
+            <div class="admin-container">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="withdraw-requests">Заявки на вывод (<span id="withdraw-count">0</span>)</button>
+                    <button class="admin-tab" data-tab="deposit-requests">Заявки на пополнение (<span id="deposit-count">0</span>)</button>
+                    <button class="admin-tab" data-tab="accounting">Бухгалтерия</button>
+                    <button class="admin-tab" data-tab="users">Пользователи</button>
+                </div>
+                
+                <div id="withdraw-requests" class="admin-content active">
+                    <h3 style="margin-bottom: 1rem;">Заявки на вывод скинов</h3>
+                    <div class="requests-list" id="withdraw-requests-list"></div>
+                </div>
+                
+                <div id="deposit-requests" class="admin-content">
+                    <h3 style="margin-bottom: 1rem;">Заявки на пополнение баланса</h3>
+                    <div class="requests-list" id="deposit-requests-list"></div>
+                </div>
+                
+                <div id="accounting" class="admin-content">
+                    <h3 style="margin-bottom: 1rem;">Бухгалтерия платформы</h3>
+                    <div class="accounting-container" id="accounting-content"></div>
+                </div>
+                
+                <div id="users" class="admin-content">
+                    <h3 style="margin-bottom: 1rem;">Пользователи платформы</h3>
+                    <div class="users-container" id="users-content"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="opening-screen" id="opening-screen">
+        <h2 style="font-size: 2.5rem; margin-bottom: 2rem;" id="opening-title">Открытие кейса</h2>
+        
+        <div class="case-slider-container">
+            <div class="case-slider-center"></div>
+            <div class="case-slider-track" id="case-slider-track"></div>
+        </div>
+        
+        <div id="opening-result" style="margin-top: 2rem; text-align: center; display: none;">
+            <div class="skin-card" id="result-skin-card">
+                <div style="width: 100%; height: 100px; background: #333; border-radius: 5px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                    <i class="fas fa-question" style="font-size: 2rem;"></i>
+                </div>
+                <p>???</p>
+                <div class="skin-rarity rarity-common">Загрузка...</div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 2rem;">
+            <button class="btn btn-primary" id="spin-case-slider">Открыть кейс</button>
+            <button class="btn btn-danger" id="close-opening">Закрыть</button>
+        </div>
+    </div>
+
+    <div class="modal" id="sell-skin-modal">
+        <div class="modal-content">
+            <h2 style="text-align: center; margin-bottom: 1rem;">Продажа скина</h2>
+            <div id="sell-skin-content" style="text-align: center;"></div>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button class="btn btn-success" id="confirm-sell" style="flex: 1;">Продать</button>
+                <button class="btn btn-danger" id="cancel-sell" style="flex: 1;">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="upgrade-result-modal">
+        <div class="modal-content">
+            <h2 style="text-align: center; margin-bottom: 1rem;" id="upgrade-result-title">Результат апгрейда</h2>
+            <div id="upgrade-result-content" style="text-align: center;"></div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="close-upgrade-result">
+                Закрыть
+            </button>
+        </div>
+    </div>
+
+    <div class="modal" id="contract-result-modal">
+        <div class="modal-content">
+            <h2 style="text-align: center; margin-bottom: 1rem;">Результат контракта</h2>
+            <div id="contract-result-content" style="text-align: center;"></div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="close-contract-result">
+                Закрыть
+            </button>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">Уведомление</span>
+    </div>
+
+    <script>
+        const CONFIG = {
+            EXCHANGE_RATE: 0.01, // 1 CR = 0.01 рубля
+            CRASH_BETTING_TIME: 10,
+            CRASH_COOLDOWN_TIME: 5,
+            CRASH_MIN_MULTIPLIER: 1.0,
+            CRASH_MAX_MULTIPLIER: 1000,
+            SELL_TAX: 0.15,
+            ADMIN_USERS: ['aapehd', 'Divinln', 'admin'],
+            MIN_RUB_DEPOSIT: 50,
+            START_BALANCE: 100000 // Начальный баланс 100,000 CR
+        };
+
+        // Обновленные данные скинов
+        function generateSkinsData() {
+            return [
+                // Common / дешёвые (Steam: 5–30 ₽)
+                { id: 1, name: "P250 | Sand Dune", rarity: "common", price: 1200, type: "skin" },
+                { id: 2, name: "MAC-10 | Urban DDPAT", rarity: "common", price: 1500, type: "skin" },
+                { id: 3, name: "SSG 08 | Mayan Dreams", rarity: "common", price: 1800, type: "skin" },
+                { id: 4, name: "UMP-45 | Mudder", rarity: "common", price: 1400, type: "skin" },
+                { id: 5, name: "MAG-7 | Memento", rarity: "common", price: 1600, type: "skin" },
+                { id: 6, name: "MP7 | Forest DDPAT", rarity: "common", price: 1500, type: "skin" },
+                { id: 7, name: "Nova | Sand Dune", rarity: "common", price: 1100, type: "skin" },
+                { id: 8, name: "PP-Bizon | Night Ops", rarity: "common", price: 1700, type: "skin" },
+                { id: 9, name: "Sawed-Off | Forest DDPAT", rarity: "common", price: 1300, type: "skin" },
+                { id: 10, name: "XM1014 | Urban Perforated", rarity: "common", price: 1600, type: "skin" },
+                { id: 11, name: "Наклейка | Обычная", rarity: "common", price: 300, type: "sticker" },
+                { id: 12, name: "Наклейка | Смешная", rarity: "common", price: 500, type: "sticker" },
+                { id: 13, name: "Наклейка | Простая", rarity: "common", price: 700, type: "sticker" },
+                { id: 14, name: "Наклейка | Базовая", rarity: "common", price: 900, type: "sticker" },
+                { id: 15, name: "Наклейка | Стандарт", rarity: "common", price: 1100, type: "sticker" },
+                
+                // Uncommon (Steam: 150–900 ₽)
+                { id: 16, name: "AK-47 | Elite Build", rarity: "uncommon", price: 45000, type: "skin" },
+                { id: 17, name: "M4A4 | Evil Daimyo", rarity: "uncommon", price: 55000, type: "skin" },
+                { id: 18, name: "AWP | Worm God", rarity: "uncommon", price: 60000, type: "skin" },
+                { id: 19, name: "Desert Eagle | Bronze Deco", rarity: "uncommon", price: 35000, type: "skin" },
+                { id: 20, name: "Glock-18 | Bunsen Burner", rarity: "uncommon", price: 30000, type: "skin" },
+                { id: 21, name: "USP-S | Guardian", rarity: "uncommon", price: 70000, type: "skin" },
+                { id: 22, name: "P250 | Mehndi", rarity: "uncommon", price: 65000, type: "skin" },
+                { id: 23, name: "M4A1-S | Basilisk", rarity: "uncommon", price: 75000, type: "skin" },
+                { id: 24, name: "AUG | Bengal Tiger", rarity: "uncommon", price: 50000, type: "skin" },
+                { id: 25, name: "SG 553 | Atlas", rarity: "uncommon", price: 40000, type: "skin" },
+                
+                // Rare (Steam: 4 000 – 80 000 ₽)
+                { id: 26, name: "AK-47 | Redline", rarity: "rare", price: 650000, type: "skin" },
+                { id: 27, name: "M4A4 | Desolate Space", rarity: "rare", price: 900000, type: "skin" },
+                { id: 28, name: "AWP | Asiimov", rarity: "rare", price: 1350000, type: "skin" },
+                { id: 29, name: "Desert Eagle | Blaze", rarity: "rare", price: 7500000, type: "skin" },
+                { id: 30, name: "Glock-18 | Water Elemental", rarity: "rare", price: 450000, type: "skin" },
+                { id: 31, name: "USP-S | Orion", rarity: "rare", price: 600000, type: "skin" },
+                { id: 32, name: "M4A1-S | Hyper Beast", rarity: "rare", price: 800000, type: "skin" },
+                { id: 33, name: "AWP | Redline", rarity: "rare", price: 550000, type: "skin" },
+                { id: 34, name: "AK-47 | Vulcan", rarity: "rare", price: 2300000, type: "skin" },
+                { id: 35, name: "M4A4 | Asiimov", rarity: "rare", price: 1700000, type: "skin" },
+                
+                // Epic (Steam: 40 000 – 1 200 000 ₽)
+                { id: 36, name: "AK-47 | Fire Serpent", rarity: "epic", price: 9500000, type: "skin" },
+                { id: 37, name: "M4A4 | Howl", rarity: "epic", price: 120000000, type: "skin" },
+                { id: 38, name: "AWP | Dragon Lore", rarity: "epic", price: 65000000, type: "skin" },
+                { id: 39, name: "Desert Eagle | Golden Koi", rarity: "epic", price: 4200000, type: "skin" },
+                { id: 40, name: "Glock-18 | Fade", rarity: "epic", price: 3800000, type: "skin" },
+                { id: 41, name: "M4A1-S | Hot Rod", rarity: "epic", price: 9000000, type: "skin" },
+                { id: 42, name: "AWP | Medusa", rarity: "epic", price: 55000000, type: "skin" },
+                { id: 43, name: "AK-47 | Neon Rider", rarity: "epic", price: 6000000, type: "skin" },
+                { id: 44, name: "M4A4 | Neo-Noir", rarity: "epic", price: 5500000, type: "skin" },
+                { id: 45, name: "AWP | Hyper Beast", rarity: "epic", price: 4000000, type: "skin" },
+                
+                // Legendary / ножи
+                { id: 46, name: "★ Butterfly Knife | Slaughter", rarity: "legendary", price: 18000000, type: "skin" },
+                { id: 47, name: "★ Karambit | Doppler", rarity: "legendary", price: 22000000, type: "skin" },
+                { id: 48, name: "★ M9 Bayonet | Crimson Web", rarity: "legendary", price: 14000000, type: "skin" },
+                { id: 49, name: "★ Bayonet | Marble Fade", rarity: "legendary", price: 16000000, type: "skin" },
+                { id: 50, name: "★ Gut Knife | Lore", rarity: "legendary", price: 6500000, type: "skin" }
+            ].map(skin => ({
+                ...skin,
+                color: {
+                    'common': '#636e72',
+                    'uncommon': '#00b894',
+                    'rare': '#0984e3',
+                    'epic': '#6c5ce7',
+                    'legendary': '#fd79a8'
+                }[skin.rarity]
+            }));
+        }
+
+        // Обновленные кейсы с увеличенной стоимостью
+        function generateCasesData(skinsData) {
+            const commonSkins = skinsData.filter(s => s.rarity === "common").map(s => s.id);
+            const uncommonSkins = skinsData.filter(s => s.rarity === "uncommon").map(s => s.id);
+            const rareSkins = skinsData.filter(s => s.rarity === "rare").map(s => s.id);
+            const epicSkins = skinsData.filter(s => s.rarity === "epic").map(s => s.id);
+            const legendarySkins = skinsData.filter(s => s.rarity === "legendary").map(s => s.id);
+
+            const getCaseContents = (commonCount, uncommonCount, rareCount, epicCount, legendaryCount) => {
+                const contents = [];
+                
+                for (let i = 0; i < commonCount; i++) {
+                    contents.push(commonSkins[Math.floor(Math.random() * commonSkins.length)]);
+                }
+                for (let i = 0; i < uncommonCount; i++) {
+                    contents.push(uncommonSkins[Math.floor(Math.random() * uncommonSkins.length)]);
+                }
+                for (let i = 0; i < rareCount; i++) {
+                    contents.push(rareSkins[Math.floor(Math.random() * rareSkins.length)]);
+                }
+                for (let i = 0; i < epicCount; i++) {
+                    contents.push(epicSkins[Math.floor(Math.random() * epicSkins.length)]);
+                }
+                for (let i = 0; i < legendaryCount; i++) {
+                    contents.push(legendarySkins[Math.floor(Math.random() * legendarySkins.length)]);
+                }
+                
+                return [...new Set(contents)];
+            };
+
+            return [
+                { 
+                    id: 0, 
+                    name: "🎁 Бесплатный кейс", 
+                    price: 0,
+                    contains: getCaseContents(15, 4, 1, 0, 0),
+                    color: "#00b894",
+                    isFree: true
+                },
+                { 
+                    id: 1, 
+                    name: "Начальный кейс", 
+                    price: 50000,
+                    contains: getCaseContents(12, 3, 0, 0, 0),
+                    color: "#636e72"
+                },
+                { 
+                    id: 2, 
+                    name: "Боевой кейс", 
+                    price: 250000,
+                    contains: getCaseContents(10, 5, 2, 0, 0),
+                    color: "#0984e3"
+                },
+                { 
+                    id: 3, 
+                    name: "Элитный кейс", 
+                    price: 500000,
+                    contains: getCaseContents(8, 6, 3, 1, 0),
+                    color: "#6c5ce7"
+                },
+                { 
+                    id: 4, 
+                    name: "Легендарный кейс", 
+                    price: 2500000,
+                    contains: getCaseContents(6, 4, 3, 2, 1),
+                    color: "#fd79a8"
+                },
+                { 
+                    id: 5, 
+                    name: "Оружейный кейс", 
+                    price: 150000,
+                    contains: getCaseContents(10, 4, 1, 0, 0),
+                    color: "#e74c3c"
+                },
+                { 
+                    id: 6, 
+                    name: "Кейс ножей", 
+                    price: 5000000,
+                    contains: getCaseContents(0, 2, 3, 3, 2),
+                    color: "#fdcb6e"
+                },
+                { 
+                    id: 7, 
+                    name: "Пистолетный кейс", 
+                    price: 100000,
+                    contains: getCaseContents(12, 3, 0, 0, 0),
+                    color: "#00b894"
+                },
+                { 
+                    id: 8, 
+                    name: "Редкий кейс", 
+                    price: 750000,
+                    contains: getCaseContents(5, 5, 5, 0, 0),
+                    color: "#0984e3"
+                },
+                { 
+                    id: 9, 
+                    name: "Эпический кейс", 
+                    price: 1500000,
+                    contains: getCaseContents(3, 4, 3, 2, 0),
+                    color: "#6c5ce7"
+                }
+            ];
+        }
+
+        const skinsData = generateSkinsData();
+        const casesData = generateCasesData(skinsData);
+
+        // Глобальные переменные
+        let currentUser = null;
+        let users = {};
+        let accounting = {
+            totalDeposits: 0,
+            totalWithdraws: 0,
+            totalDepositsRUB: 0,
+            totalWithdrawsRUB: 0,
+            profit: 0,
+            transactions: []
+        };
+        let currentOpeningCase = null;
+
+        // Инициализация
+        function init() {
+            loadUsers();
+            loadAccounting();
+            checkAuth();
+            setupAuthTabs();
+            setupEventListeners();
+        }
+
+        // Загрузка пользователей
+        function loadUsers() {
+            const saved = localStorage.getItem('crystal_skins_users');
+            if (saved) {
+                users = JSON.parse(saved);
+            }
+            
+            // Создаем администраторов по умолчанию
+            if (!users['admin']) {
+                users['admin'] = {
+                    password: 'admin123',
+                    isAdmin: true,
+                    data: createUserData('admin', true)
+                };
+            }
+            if (!users['aapehd']) {
+                users['aapehd'] = {
+                    password: 'admin123',
+                    isAdmin: true,
+                    data: createUserData('aapehd', true)
+                };
+            }
+            if (!users['Divinln']) {
+                users['Divinln'] = {
+                    password: 'admin123',
+                    isAdmin: true,
+                    data: createUserData('Divinln', true)
+                };
+            }
+            
+            saveUsers();
+        }
+
+        // Создание данных пользователя
+        function createUserData(username, isAdmin = false) {
+            return {
+                username: username,
+                balance: isAdmin ? 10000000 : CONFIG.START_BALANCE,
+                inventory: [],
+                crash: {
+                    phase: 'waiting',
+                    currentMultiplier: 1.0,
+                    crashPoint: null,
+                    myBets: [],
+                    crashHistory: [],
+                    timerInterval: null,
+                    roundStartTime: null,
+                    bettingEnd: null,
+                    animationInterval: null
+                },
+                upgrade: {
+                    selectedSkins: [],
+                    multiplier: 2
+                },
+                contract: {
+                    selectedSkins: []
+                },
+                withdraw: {
+                    selectedSkin: null
+                },
+                deposit: {
+                    selectedAmount: 0,
+                    selectedMethod: null
+                },
+                admin: {
+                    depositRequests: [],
+                    withdrawRequests: []
+                },
+                freeCaseUsed: false,
+                tasks: {
+                    daily: [
+                        { id: 1, title: "Открыть 3 кейса", reward: 30000, current: 0, target: 3, completed: false },
+                        { id: 2, title: "Выиграть в КРАШ 50000 CR", reward: 50000, current: 0, target: 50000, completed: false },
+                        { id: 3, title: "Выполнить 2 контракта", reward: 40000, current: 0, target: 2, completed: false },
+                        { id: 4, title: "Продать 5 скинов", reward: 25000, current: 0, target: 5, completed: false },
+                        { id: 5, title: "Пополнить баланс", reward: 100000, current: 0, target: 1, completed: false }
+                    ],
+                    lastReset: new Date().toISOString()
+                }
+            };
+        }
+
+        // Загрузка бухгалтерии
+        function loadAccounting() {
+            const saved = localStorage.getItem('crystal_skins_accounting');
+            if (saved) {
+                accounting = JSON.parse(saved);
+            }
+        }
+
+        // Сохранение бухгалтерии
+        function saveAccounting() {
+            localStorage.setItem('crystal_skins_accounting', JSON.stringify(accounting));
+        }
+
+        // Сохранение пользователей
+        function saveUsers() {
+            localStorage.setItem('crystal_skins_users', JSON.stringify(users));
+        }
+
+        // Проверка авторизации
+        function checkAuth() {
+            const savedUser = localStorage.getItem('crystal_skins_current_user');
+            if (savedUser && users[savedUser]) {
+                currentUser = savedUser;
+                showMainInterface();
+                loadUserData();
+            } else {
+                showAuthInterface();
+            }
+        }
+
+        // Показать интерфейс авторизации
+        function showAuthInterface() {
+            document.getElementById('auth-container').style.display = 'flex';
+            document.getElementById('main-header').style.display = 'none';
+            document.getElementById('main-container').style.display = 'none';
+        }
+
+        // Показать основной интерфейс
+        function showMainInterface() {
+            document.getElementById('auth-container').style.display = 'none';
+            document.getElementById('main-header').style.display = 'flex';
+            document.getElementById('main-container').style.display = 'block';
+        }
+
+        // Настройка вкладок авторизации
+        function setupAuthTabs() {
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const formId = this.getAttribute('data-form');
+                    
+                    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    document.querySelectorAll('.auth-form').forEach(form => {
+                        form.classList.remove('active');
+                    });
+                    
+                    document.getElementById(formId).classList.add('active');
+                    
+                    // Очищаем ошибки
+                    document.getElementById('login-error').style.display = 'none';
+                    document.getElementById('register-error').style.display = 'none';
+                });
+            });
+        }
+
+        // Вход
+        function login() {
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            const errorElement = document.getElementById('login-error');
+            
+            errorElement.style.display = 'none';
+            
+            if (!username || !password) {
+                errorElement.textContent = 'Введите имя пользователя и пароль';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            if (!users[username]) {
+                errorElement.textContent = 'Пользователь не найден';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            if (users[username].password !== password) {
+                errorElement.textContent = 'Неверный пароль';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            currentUser = username;
+            localStorage.setItem('crystal_skins_current_user', username);
+            showMainInterface();
+            loadUserData();
+            showNotification(`Добро пожаловать, ${username}!`, 'success');
+        }
+
+        // Регистрация
+        function register() {
+            const username = document.getElementById('register-username').value.trim();
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm').value;
+            const errorElement = document.getElementById('register-error');
+            
+            errorElement.style.display = 'none';
+            
+            if (!username || !password || !confirmPassword) {
+                errorElement.textContent = 'Заполните все поля';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                errorElement.textContent = 'Пароли не совпадают';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            if (password.length < 6) {
+                errorElement.textContent = 'Пароль должен содержать минимум 6 символов';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            if (users[username]) {
+                errorElement.textContent = 'Пользователь уже существует';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            users[username] = {
+                password: password,
+                isAdmin: CONFIG.ADMIN_USERS.includes(username),
+                data: createUserData(username, CONFIG.ADMIN_USERS.includes(username))
+            };
+            
+            saveUsers();
+            currentUser = username;
+            localStorage.setItem('crystal_skins_current_user', username);
+            showMainInterface();
+            loadUserData();
+            showNotification(`Регистрация успешна! Добро пожаловать, ${username}!`, 'success');
+        }
+
+        // Выход
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('crystal_skins_current_user');
+            showAuthInterface();
+            showNotification('Вы вышли из аккаунта', 'success');
+        }
+
+        // Загрузка данных пользователя
+        function loadUserData() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const lastReset = new Date(userData.tasks?.lastReset || 0);
+            const now = new Date();
+            
+            // Сбрасываем задачи, если день изменился
+            if (now.getDate() !== lastReset.getDate() || now.getMonth() !== lastReset.getMonth() || now.getFullYear() !== lastReset.getFullYear()) {
+                userData.tasks.daily.forEach(task => {
+                    task.current = 0;
+                    task.completed = false;
+                });
+                userData.tasks.lastReset = now.toISOString();
+                saveUsers();
+            }
+            
+            updateUI();
+            generateCases();
+            initCrashGame();
+            updateCrashHistory();
+            updateTasks();
+            startTaskResetTimer();
+            checkAdminAccess();
+            
+            if (!userData.freeCaseUsed) {
+                setTimeout(() => {
+                    showNotification('🎁 Вам доступен бесплатный кейс для начала игры!', 'success');
+                }, 1000);
+            }
+        }
+
+        // Обновление интерфейса
+        function updateUI() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            document.getElementById('balance').textContent = formatNumber(userData.balance);
+            updateInventory();
+        }
+
+        // Обновление инвентаря
+        function updateInventory() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const container = document.getElementById('inventory-grid');
+            const totalEl = document.getElementById('inventory-total');
+            const countEl = document.getElementById('inventory-count');
+            
+            container.innerHTML = '';
+            let total = 0;
+            
+            userData.inventory.forEach((item, index) => {
+                total += item.price;
+                const itemEl = document.createElement('div');
+                itemEl.className = 'inventory-item';
+                itemEl.dataset.index = index;
+                itemEl.innerHTML = `
+                    <div class="skin-actions">
+                        <div class="skin-action-btn sell-btn" onclick="showSellModal(${index}, event)">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                    </div>
+                    <div style="width: 100%; height: 100px; background: ${item.color}; border-radius: 5px; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-gem" style="font-size: 2rem;"></i>
+                    </div>
+                    <p style="font-size: 0.9rem;">${item.name}</p>
+                    <div class="skin-rarity rarity-${item.rarity}">${getRarityName(item.rarity)}</div>
+                    <p style="color: ${item.color}; font-weight: bold;">${formatNumber(item.price)} CR</p>
+                `;
+                container.appendChild(itemEl);
+            });
+            
+            totalEl.textContent = formatNumber(total);
+            countEl.textContent = userData.inventory.length;
+        }
+
+        // Генерация кейсов
+        function generateCases() {
+            const container = document.getElementById('cases-grid');
+            container.innerHTML = '';
+            
+            casesData.forEach(caseItem => {
+                if (caseItem.id === 0 && users[currentUser].data.freeCaseUsed) {
+                    return;
+                }
+                
+                const caseCard = document.createElement('div');
+                caseCard.className = `case-card ${caseItem.isFree ? 'free' : ''}`;
+                caseCard.innerHTML = `
+                    <div class="case-image" style="background: linear-gradient(45deg, ${caseItem.color}, #2575fc)">
+                        ${caseItem.isFree ? '<i class="fas fa-gift"></i>' : '<i class="fas fa-gem"></i>'}
+                    </div>
+                    <h3>${caseItem.name}</h3>
+                    <p>Содержит ${caseItem.contains.length} скинов</p>
+                    <div class="case-price">${caseItem.price === 0 ? 'БЕСПЛАТНО' : formatNumber(caseItem.price) + ' CR'}</div>
+                    <button class="btn ${caseItem.isFree ? 'btn-success' : 'btn-primary'} open-case" data-case-id="${caseItem.id}">
+                        ${caseItem.isFree ? 'Получить бесплатно' : 'Открыть за ' + formatNumber(caseItem.price) + ' CR'}
+                    </button>
+                `;
+                
+                caseCard.querySelector('.open-case').addEventListener('click', () => {
+                    openCase(caseItem.id);
+                });
+                
+                container.appendChild(caseCard);
+            });
+        }
+
+        // Открытие кейса
+        function openCase(caseId) {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const caseItem = casesData.find(c => c.id === caseId);
+            if (!caseItem) {
+                showNotification('Кейс не найден!', 'error');
+                return;
+            }
+            
+            if (caseItem.price > 0 && userData.balance < caseItem.price) {
+                showNotification('Недостаточно средств!', 'error');
+                return;
+            }
+            
+            if (caseItem.id === 0 && userData.freeCaseUsed) {
+                showNotification('Вы уже использовали бесплатный кейс!', 'warning');
+                return;
+            }
+            
+            if (caseItem.price > 0) {
+                userData.balance -= caseItem.price;
+            } else {
+                userData.freeCaseUsed = true;
+            }
+            
+            updateTaskProgress(1, 1);
+            
+            showCaseSlider(caseItem);
+            updateUI();
+            saveUsers();
+        }
+
+        // Показать слайдер кейса
+        function showCaseSlider(caseItem) {
+            currentOpeningCase = caseItem;
+            const openingScreen = document.getElementById('opening-screen');
+            const sliderTrack = document.getElementById('case-slider-track');
+            const openingTitle = document.getElementById('opening-title');
+            
+            openingTitle.textContent = `Открытие ${caseItem.name}`;
+            sliderTrack.innerHTML = '';
+            
+            // Создаем элементы скинов для слайдера
+            caseItem.contains.forEach(skinId => {
+                const skin = skinsData.find(s => s.id === skinId);
+                if (!skin) return;
+                
+                const skinElement = document.createElement('div');
+                skinElement.className = 'case-slider-item';
+                skinElement.innerHTML = `
+                    <div style="width: 100%; height: 100px; background: ${skin.color}; border-radius: 5px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                        <i class="fas fa-gem" style="font-size: 2rem;"></i>
+                    </div>
+                    <p style="font-size: 0.8rem;">${skin.name}</p>
+                    <div class="skin-rarity rarity-${skin.rarity}">${getRarityName(skin.rarity)}</div>
+                    <p style="color: ${skin.color}; font-size: 0.9rem; font-weight: bold;">${formatNumber(skin.price)} CR</p>
+                `;
+                sliderTrack.appendChild(skinElement);
+            });
+            
+            // Добавляем дополнительные элементы для плавности
+            for (let i = 0; i < 5; i++) {
+                caseItem.contains.forEach(skinId => {
+                    const skin = skinsData.find(s => s.id === skinId);
+                    if (!skin) return;
+                    
+                    const skinElement = document.createElement('div');
+                    skinElement.className = 'case-slider-item';
+                    skinElement.innerHTML = `
+                        <div style="width: 100%; height: 100px; background: ${skin.color}; border-radius: 5px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                            <i class="fas fa-gem" style="font-size: 2rem;"></i>
+                        </div>
+                        <p style="font-size: 0.8rem;">${skin.name}</p>
+                        <div class="skin-rarity rarity-${skin.rarity}">${getRarityName(skin.rarity)}</div>
+                        <p style="color: ${skin.color}; font-size: 0.9rem; font-weight: bold;">${formatNumber(skin.price)} CR</p>
+                    `;
+                    sliderTrack.appendChild(skinElement);
+                });
+            }
+            
+            openingScreen.style.display = 'flex';
+            document.getElementById('opening-result').style.display = 'none';
+            
+            // Активируем кнопку "Открыть кейс"
+            document.getElementById('spin-case-slider').disabled = false;
+            document.getElementById('close-opening').disabled = false;
+        }
+
+        // Вращение слайдера кейса (слева направо)
+        function spinCaseSlider() {
+            if (!currentOpeningCase || !currentUser || !users[currentUser]) return;
+            
+            const sliderTrack = document.getElementById('case-slider-track');
+            const spinButton = document.getElementById('spin-case-slider');
+            const closeButton = document.getElementById('close-opening');
+            
+            // Выбираем случайный скин из кейса
+            const randomSkinId = currentOpeningCase.contains[Math.floor(Math.random() * currentOpeningCase.contains.length)];
+            const wonSkin = skinsData.find(s => s.id === randomSkinId);
+            
+            if (!wonSkin) return;
+            
+            // Блокируем кнопки
+            spinButton.disabled = true;
+            closeButton.disabled = true;
+            
+            // Анимация прокрутки (слева направо)
+            const itemWidth = 180 + 16; // ширина элемента + gap
+            const itemsCount = currentOpeningCase.contains.length * 6; // общее количество элементов (оригинал + 5 копий)
+            const middleIndex = Math.floor(itemsCount / 2);
+            
+            // Начинаем с левого края и двигаемся вправо
+            const startPosition = -(itemsCount * itemWidth) / 2;
+            const targetPosition = startPosition + (middleIndex * itemWidth) - (Math.floor(Math.random() * 5) + 3) * itemWidth;
+            
+            // Устанавливаем начальную позицию слева
+            sliderTrack.style.transform = `translateX(${startPosition}px)`;
+            
+            let currentPosition = startPosition;
+            let speed = 0;
+            const maxSpeed = 80;
+            const acceleration = 0.8;
+            const decelerationPoint = -targetPosition * 0.3; // Точка начала замедления
+            
+            const animate = () => {
+                // Ускорение
+                if (currentPosition < decelerationPoint) {
+                    speed = Math.min(maxSpeed, speed + acceleration);
+                } 
+                // Замедление
+                else {
+                    speed = Math.max(2, speed - acceleration * 1.5);
+                }
+                
+                // Двигаемся вправо (увеличиваем позицию)
+                currentPosition += speed;
+                
+                // Применяем трансформацию
+                sliderTrack.style.transform = `translateX(${currentPosition}px)`;
+                
+                // Проверяем, достигли ли целевой позиции
+                if (currentPosition >= targetPosition && speed <= 2) {
+                    // Анимация завершена
+                    sliderTrack.style.transform = `translateX(${targetPosition}px)`;
+                    
+                    // Помечаем выигранный скин
+                    setTimeout(() => {
+                        const items = sliderTrack.querySelectorAll('.case-slider-item');
+                        const targetIndex = Math.floor((targetPosition - startPosition) / itemWidth) % itemsCount;
+                        if (items[targetIndex]) {
+                            items[targetIndex].classList.add('selected');
+                        }
+                        
+                        // Показываем результат
+                        showOpeningResult(wonSkin);
+                        
+                        // Разблокируем кнопку закрытия
+                        closeButton.disabled = false;
+                    }, 500);
+                    
+                    return;
+                }
+                
+                requestAnimationFrame(animate);
+            };
+            
+            // Запускаем анимацию
+            setTimeout(() => {
+                animate();
+            }, 100);
+        }
+
+        // Показать результат открытия кейса
+        function showOpeningResult(skin) {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            
+            // Добавляем скин в инвентарь
+            userData.inventory.push({
+                ...skin,
+                id: Date.now() + Math.random(),
+                obtainedAt: new Date().toISOString()
+            });
+            
+            // Обновляем UI
+            updateUI();
+            saveUsers();
+            
+            // Показываем результат
+            const resultCard = document.getElementById('result-skin-card');
+            resultCard.innerHTML = `
+                <div style="width: 100%; height: 100px; background: ${skin.color}; border-radius: 5px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                    <i class="fas fa-gem" style="font-size: 2rem;"></i>
+                </div>
+                <p>${skin.name}</p>
+                <div class="skin-rarity rarity-${skin.rarity}">${getRarityName(skin.rarity)}</div>
+                <p style="color: ${skin.color}; font-weight: bold;">${formatNumber(skin.price)} CR</p>
+            `;
+            resultCard.classList.add('revealed');
+            
+            document.getElementById('opening-result').style.display = 'block';
+            
+            showNotification(`Вы выиграли ${skin.name} стоимостью ${formatNumber(skin.price)} CR!`, 'success');
+        }
+
+        // Закрытие окна открытия кейса
+        function closeOpeningScreen() {
+            const openingScreen = document.getElementById('opening-screen');
+            openingScreen.style.display = 'none';
+            
+            // Обновляем интерфейс
+            updateUI();
+            generateCases();
+            
+            // Сбрасываем состояние
+            currentOpeningCase = null;
+        }
+
+        // Игра Crash
+        function initCrashGame() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            
+            if (userData.crash.timerInterval) {
+                clearInterval(userData.crash.timerInterval);
+            }
+            if (userData.crash.animationInterval) {
+                clearInterval(userData.crash.animationInterval);
+            }
+            
+            startNewCrashRound();
+            
+            userData.crash.timerInterval = setInterval(() => updateCrashGameState(), 1000);
+        }
+
+        function startNewCrashRound() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            userData.crash.phase = 'waiting';
+            userData.crash.currentMultiplier = 1.0;
+            userData.crash.crashPoint = null;
+            userData.crash.myBets = [];
+            userData.crash.roundStartTime = Date.now();
+            userData.crash.bettingEnd = Date.now() + CONFIG.CRASH_BETTING_TIME * 1000;
+            
+            document.getElementById('crash-line').style.transform = 'scaleX(0)';
+            document.getElementById('crash-multiplier').textContent = '1.00x';
+            document.getElementById('crash-multiplier').style.color = '#00b894';
+            
+            setTimeout(() => {
+                userData.crash.phase = 'betting';
+                userData.crash.bettingEnd = Date.now() + CONFIG.CRASH_BETTING_TIME * 1000;
+            }, 5000);
+        }
+
+        function updateCrashGameState() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const timerElement = document.getElementById('crash-timer');
+            const phaseElement = document.getElementById('timer-phase');
+            const messageElement = document.getElementById('timer-message');
+            const betButton = document.getElementById('crash-place-bet');
+            
+            const now = Date.now();
+            
+            switch (userData.crash.phase) {
+                case 'waiting':
+                    const waitTime = Math.max(0, Math.ceil((5000 - (now - userData.crash.roundStartTime)) / 1000));
+                    phaseElement.textContent = 'Ожидание старта';
+                    timerElement.textContent = waitTime;
+                    timerElement.style.color = '#fdcb6e';
+                    messageElement.textContent = 'До начала приема ставок';
+                    betButton.disabled = true;
+                    betButton.textContent = 'Ожидание';
+                    break;
+                    
+                case 'betting':
+                    const bettingTime = Math.max(0, Math.ceil((userData.crash.bettingEnd - now) / 1000));
+                    phaseElement.textContent = 'Прием ставок';
+                    timerElement.textContent = bettingTime;
+                    timerElement.style.color = bettingTime <= 3 ? '#e74c3c' : '#00b894';
+                    messageElement.textContent = 'До начала игры';
+                    betButton.disabled = false;
+                    betButton.textContent = 'Поставить';
+                    
+                    if (bettingTime <= 0) {
+                        startCrashGame();
+                    }
+                    break;
+                    
+                case 'running':
+                    phaseElement.textContent = 'Игра в процессе';
+                    timerElement.textContent = userData.crash.currentMultiplier.toFixed(2) + 'x';
+                    timerElement.style.color = getMultiplierColor(userData.crash.currentMultiplier);
+                    messageElement.textContent = 'Текущий множитель';
+                    betButton.disabled = true;
+                    betButton.textContent = 'Игра идет';
+                    break;
+                    
+                case 'cooldown':
+                    const cooldownTime = Math.max(0, Math.ceil((userData.crash.bettingEnd - now) / 1000));
+                    phaseElement.textContent = 'Ожидание';
+                    timerElement.textContent = cooldownTime;
+                    timerElement.style.color = '#fdcb6e';
+                    messageElement.textContent = 'До следующего раунда';
+                    betButton.disabled = true;
+                    betButton.textContent = 'Ожидание';
+                    
+                    if (cooldownTime <= 0) {
+                        startNewCrashRound();
+                    }
+                    break;
+            }
+            
+            updateActiveBets();
+        }
+
+        function getMultiplierColor(multiplier) {
+            if (multiplier > 10) return '#ff6b6b';
+            if (multiplier > 5) return '#fdcb6e';
+            if (multiplier > 2) return '#00b894';
+            return '#0984e3';
+        }
+
+        function startCrashGame() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            userData.crash.phase = 'running';
+            userData.crash.currentMultiplier = 1.0;
+            
+            const r = Math.random();
+            let crashPoint;
+            
+            if (r < 0.4) {
+                crashPoint = 1.0 + Math.random() * 0.5;
+            } else if (r < 0.7) {
+                crashPoint = 1.5 + Math.random() * 1.5;
+            } else if (r < 0.85) {
+                crashPoint = 3.0 + Math.random() * 2.0;
+            } else if (r < 0.95) {
+                crashPoint = 5.0 + Math.random() * 5.0;
+            } else {
+                crashPoint = 10.0 + Math.random() * 90.0;
+            }
+            
+            userData.crash.crashPoint = parseFloat(crashPoint.toFixed(2));
+            
+            animateCrash();
+        }
+
+        function animateCrash() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const line = document.getElementById('crash-line');
+            const multiplierEl = document.getElementById('crash-multiplier');
+            
+            let speed = 0.005;
+            const animationStep = () => {
+                if (userData.crash.phase !== 'running') return;
+                
+                userData.crash.currentMultiplier += speed;
+                speed *= 1.005;
+                
+                if (userData.crash.currentMultiplier >= userData.crash.crashPoint) {
+                    userData.crash.currentMultiplier = userData.crash.crashPoint;
+                    endCrashRound();
+                    return;
+                }
+                
+                const progress = Math.min(1, (userData.crash.currentMultiplier - 1.0) / 10);
+                line.style.transform = `scaleX(${progress})`;
+                multiplierEl.textContent = `${userData.crash.currentMultiplier.toFixed(2)}x`;
+                multiplierEl.style.color = getMultiplierColor(userData.crash.currentMultiplier);
+                
+                updateActiveBets();
+            };
+            
+            userData.crash.animationInterval = setInterval(animationStep, 50);
+        }
+
+        function endCrashRound() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            clearInterval(userData.crash.animationInterval);
+            userData.crash.phase = 'cooldown';
+            
+            userData.crash.crashHistory.unshift({
+                multiplier: userData.crash.crashPoint,
+                timestamp: new Date().toISOString()
+            });
+            
+            if (userData.crash.crashHistory.length > 20) {
+                userData.crash.crashHistory.pop();
+            }
+            
+            updateCrashHistory();
+            calculateCrashWinnings();
+            
+            userData.crash.myBets = [];
+            updateActiveBets();
+            
+            userData.crash.bettingEnd = Date.now() + CONFIG.CRASH_COOLDOWN_TIME * 1000;
+            
+            updateCrashGameState();
+            saveUsers();
+        }
+
+        function setBetAmount(amount) {
+            document.getElementById('crash-bet-amount').value = amount;
+        }
+
+        function placeBet() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            
+            if (userData.crash.phase !== 'betting') {
+                showNotification('Прием ставок завершен!', 'warning');
+                return;
+            }
+            
+            const betAmount = parseInt(document.getElementById('crash-bet-amount').value) || 10000;
+            
+            if (betAmount < 100) {
+                showNotification('Минимальная ставка: 100 CR', 'warning');
+                return;
+            }
+            
+            if (userData.balance < betAmount) {
+                showNotification('Недостаточно средств!', 'error');
+                return;
+            }
+            
+            userData.balance -= betAmount;
+            
+            const bet = {
+                id: Date.now(),
+                amount: betAmount,
+                multiplier: 1.0,
+                cashedOut: false,
+                cashOutMultiplier: null
+            };
+            
+            userData.crash.myBets.push(bet);
+            
+            updateUI();
+            updateActiveBets();
+            saveUsers();
+            
+            showNotification(`Ставка ${formatNumber(betAmount)} CR принята!`, 'success');
+        }
+
+        function updateActiveBets() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const container = document.getElementById('active-bets');
+            container.innerHTML = '';
+            
+            userData.crash.myBets.forEach((bet, index) => {
+                const currentValue = bet.amount * (bet.cashedOut ? bet.cashOutMultiplier : userData.crash.currentMultiplier);
+                const profit = currentValue - bet.amount;
+                
+                const betElement = document.createElement('div');
+                betElement.className = 'bet-item';
+                betElement.innerHTML = `
+                    <div>
+                        <span>${formatNumber(bet.amount)} CR</span>
+                        <div style="font-size: 0.8rem; color: ${profit >= 0 ? '#00b894' : '#e74c3c'}">
+                            ${profit >= 0 ? '+' : ''}${formatNumber(profit)} CR
+                        </div>
+                    </div>
+                    <div>
+                        ${bet.cashedOut ? 
+                            `<span style="color: #00b894;">${bet.cashOutMultiplier.toFixed(2)}x</span>` :
+                            `<span>${userData.crash.currentMultiplier.toFixed(2)}x</span>`
+                        }
+                    </div>
+                `;
+                
+                container.appendChild(betElement);
+            });
+            
+            const hasActiveBets = userData.crash.myBets.some(bet => !bet.cashedOut);
+            document.getElementById('crash-cash-out').disabled = !hasActiveBets;
+        }
+
+        function cashOutAll() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            
+            if (userData.crash.phase !== 'running') {
+                showNotification('Игра не запущена!', 'warning');
+                return;
+            }
+            
+            let totalWin = 0;
+            
+            userData.crash.myBets.forEach(bet => {
+                if (!bet.cashedOut) {
+                    bet.cashedOut = true;
+                    bet.cashOutMultiplier = userData.crash.currentMultiplier;
+                    const winAmount = bet.amount * userData.crash.currentMultiplier;
+                    totalWin += winAmount;
+                }
+            });
+            
+            if (totalWin > 0) {
+                userData.balance += totalWin;
+                updateUI();
+                updateActiveBets();
+                saveUsers();
+                showNotification(`Забрано ${formatNumber(totalWin)} CR!`, 'success');
+                
+                updateTaskProgress(2, totalWin);
+            }
+        }
+
+        function calculateCrashWinnings() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            let totalWin = 0;
+            
+            userData.crash.myBets.forEach(bet => {
+                if (!bet.cashedOut) {
+                    // Ставка проиграла
+                } else if (bet.cashedOut && bet.cashOutMultiplier < userData.crash.crashPoint) {
+                    const winAmount = bet.amount * bet.cashOutMultiplier;
+                    totalWin += winAmount;
+                }
+            });
+            
+            if (totalWin > 0) {
+                userData.balance += totalWin;
+                updateUI();
+                saveUsers();
+            }
+        }
+
+        function updateCrashHistory() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const container = document.getElementById('crash-history');
+            container.innerHTML = '';
+            
+            userData.crash.crashHistory.forEach((round, index) => {
+                const item = document.createElement('div');
+                item.className = `crash-history-item ${round.multiplier >= 2 ? 'crash-history-win' : 'crash-history-lose'}`;
+                item.textContent = `${round.multiplier.toFixed(2)}x`;
+                item.title = new Date(round.timestamp).toLocaleTimeString();
+                container.appendChild(item);
+            });
+        }
+
+        // Проверка прав администратора
+        function checkAdminAccess() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const isAdmin = users[currentUser].isAdmin;
+            
+            if (isAdmin) {
+                document.getElementById('admin-nav').style.display = 'block';
+                document.getElementById('admin-badge').style.display = 'block';
+                updateAdminPanel();
+            } else {
+                document.getElementById('admin-nav').style.display = 'none';
+                document.getElementById('admin-badge').style.display = 'none';
+            }
+        }
+
+        // Обновление панели администратора
+        function updateAdminPanel() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            updateWithdrawRequests();
+            updateDepositRequests();
+            updateAccounting();
+            updateUsersList();
+        }
+
+        // Обновление заявок на вывод
+        function updateWithdrawRequests() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const container = document.getElementById('withdraw-requests-list');
+            const countElement = document.getElementById('withdraw-count');
+            
+            if (!container) return;
+            
+            container.innerHTML = '';
+            const pendingRequests = userData.admin.withdrawRequests.filter(r => r.status === 'pending');
+            countElement.textContent = pendingRequests.length;
+            
+            userData.admin.withdrawRequests.forEach(request => {
+                const requestElement = document.createElement('div');
+                requestElement.className = 'request-item';
+                requestElement.innerHTML = `
+                    <div class="request-header">
+                        <div>
+                            <h4>Вывод скина</h4>
+                            <p>Пользователь: <strong>${request.username}</strong></p>
+                            <p>Скин: <strong>${request.skin.name}</strong></p>
+                            <p>Стоимость: <strong>${formatNumber(request.skin.price)} CR</strong></p>
+                            <p>Трейд ссылка: <a href="${request.tradeLink}" target="_blank" style="color: var(--primary);">${request.tradeLink.substring(0, 50)}...</a></p>
+                            <p>Дата: ${new Date(request.createdAt).toLocaleString()}</p>
+                        </div>
+                        <div class="request-status status-${request.status}">
+                            ${request.status === 'pending' ? 'Ожидает' : request.status === 'completed' ? 'Выполнено' : 'Отклонено'}
+                        </div>
+                    </div>
+                    ${request.status === 'pending' ? `
+                        <div class="request-actions">
+                            <button class="btn btn-success" onclick="processWithdrawRequest(${request.id}, 'completed')">
+                                <i class="fas fa-check"></i> Подтвердить
+                            </button>
+                            <button class="btn btn-danger" onclick="processWithdrawRequest(${request.id}, 'rejected')">
+                                <i class="fas fa-times"></i> Отклонить
+                            </button>
+                        </div>
+                    ` : ''}
+                `;
+                container.appendChild(requestElement);
+            });
+        }
+
+        // Обновление заявок на пополнение
+        function updateDepositRequests() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const container = document.getElementById('deposit-requests-list');
+            const countElement = document.getElementById('deposit-count');
+            
+            if (!container) return;
+            
+            container.innerHTML = '';
+            const pendingRequests = userData.admin.depositRequests.filter(r => r.status === 'pending');
+            countElement.textContent = pendingRequests.length;
+            
+            userData.admin.depositRequests.forEach(request => {
+                const rubAmount = request.amount * CONFIG.EXCHANGE_RATE;
+                const requestElement = document.createElement('div');
+                requestElement.className = 'request-item';
+                requestElement.innerHTML = `
+                    <div class="request-header">
+                        <div>
+                            <h4>Пополнение баланса</h4>
+                            <p>Пользователь: <strong>${request.username}</strong></p>
+                            <p>Сумма: <strong>${formatNumber(request.amount)} CR (${rubAmount.toFixed(0)} руб.)</strong></p>
+                            <p>Метод: <strong>${request.method === 'crypto' ? 'Криптовалюта (USDT)' : 'Рубли РФ'}</strong></p>
+                            <p>Дата: ${new Date(request.createdAt).toLocaleString()}</p>
+                        </div>
+                        <div class="request-status status-${request.status}">
+                            ${request.status === 'pending' ? 'Ожидает' : request.status === 'completed' ? 'Выполнено' : 'Отклонено'}
+                        </div>
+                    </div>
+                    ${request.status === 'pending' ? `
+                        <div class="request-actions">
+                            <button class="btn btn-success" onclick="processDepositRequest(${request.id}, 'completed')">
+                                <i class="fas fa-check"></i> Подтвердить
+                            </button>
+                            <button class="btn btn-danger" onclick="processDepositRequest(${request.id}, 'rejected')">
+                                <i class="fas fa-times"></i> Отклонить
+                            </button>
+                        </div>
+                    ` : ''}
+                `;
+                container.appendChild(requestElement);
+            });
+        }
+
+        // Обновление списка пользователей
+        function updateUsersList() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const container = document.getElementById('users-content');
+            if (!container) return;
+            
+            let usersList = Object.entries(users).map(([username, userData]) => ({
+                username,
+                ...userData
+            }));
+            
+            // Сортируем по дате последнего входа
+            usersList.sort((a, b) => {
+                const aLastLogin = localStorage.getItem(`last_login_${a.username}`) || 0;
+                const bLastLogin = localStorage.getItem(`last_login_${b.username}`) || 0;
+                return bLastLogin - aLastLogin;
+            });
+            
+            container.innerHTML = `
+                <h4>Всего пользователей: ${usersList.length}</h4>
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Имя пользователя</th>
+                            <th>Статус</th>
+                            <th>Баланс (CR)</th>
+                            <th>Скинов</th>
+                            <th>Пополнений</th>
+                            <th>Последний вход</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${usersList.map(user => {
+                            const userData = user.data || {};
+                            const inventoryCount = userData.inventory ? userData.inventory.length : 0;
+                            const totalDeposits = userData.admin && userData.admin.depositRequests ? 
+                                userData.admin.depositRequests.filter(r => r.status === 'completed').reduce((sum, r) => sum + r.amount, 0) : 0;
+                            const lastLogin = localStorage.getItem(`last_login_${user.username}`);
+                            const lastLoginStr = lastLogin ? new Date(parseInt(lastLogin)).toLocaleString() : 'Никогда';
+                            
+                            return `
+                                <tr>
+                                    <td>
+                                        ${user.username}
+                                        ${user.isAdmin ? '<span class="user-admin-badge">АДМИН</span>' : ''}
+                                    </td>
+                                    <td>${user.isAdmin ? 'Администратор' : 'Пользователь'}</td>
+                                    <td>${formatNumber(userData.balance || 0)}</td>
+                                    <td>${inventoryCount}</td>
+                                    <td>${formatNumber(totalDeposits)} CR</td>
+                                    <td>${lastLoginStr}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+                
+                <div style="margin-top: 2rem;">
+                    <button class="btn btn-danger" onclick="resetAllUsers()">
+                        <i class="fas fa-trash"></i> Сбросить всех пользователей (кроме админов)
+                    </button>
+                    <button class="btn btn-warning" onclick="exportUsersData()" style="margin-left: 1rem;">
+                        <i class="fas fa-download"></i> Экспорт данных
+                    </button>
+                </div>
+            `;
+        }
+
+        // Сброс всех пользователей (кроме админов)
+        function resetAllUsers() {
+            if (!confirm('Вы уверены? Это удалит всех пользователей, кроме администраторов, и сбросит их прогресс.')) return;
+            
+            Object.keys(users).forEach(username => {
+                if (!CONFIG.ADMIN_USERS.includes(username)) {
+                    delete users[username];
+                }
+            });
+            
+            saveUsers();
+            updateUsersList();
+            showNotification('Все пользователи (кроме админов) были сброшены!', 'success');
+        }
+
+        // Экспорт данных пользователей
+        function exportUsersData() {
+            const dataStr = JSON.stringify(users, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `crystal_skins_users_${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification('Данные пользователей экспортированы!', 'success');
+        }
+
+        // Обработка заявки на вывод
+        function processWithdrawRequest(requestId, status) {
+            if (!currentUser || !users[currentUser] || !users[currentUser].isAdmin) return;
+            
+            const userData = users[currentUser].data;
+            const request = userData.admin.withdrawRequests.find(r => r.id === requestId);
+            if (!request) return;
+            
+            request.status = status;
+            request.processedAt = new Date().toISOString();
+            request.processedBy = currentUser;
+            
+            if (status === 'completed') {
+                // Обновляем бухгалтерию
+                const rubAmount = request.skin.price * CONFIG.EXCHANGE_RATE;
+                accounting.totalWithdraws += request.skin.price;
+                accounting.totalWithdrawsRUB += rubAmount;
+                accounting.profit -= rubAmount;
+                
+                accounting.transactions.unshift({
+                    id: Date.now(),
+                    type: 'withdraw',
+                    username: request.username,
+                    amount: request.skin.price,
+                    amountRUB: rubAmount,
+                    skinName: request.skin.name,
+                    date: new Date().toISOString(),
+                    status: 'completed'
+                });
+                
+                saveAccounting();
+            }
+            
+            saveUsers();
+            updateAdminPanel();
+            showNotification(`Заявка на вывод ${status === 'completed' ? 'подтверждена' : 'отклонена'}`, 'success');
+        }
+
+        // Обработка заявки на пополнение
+        function processDepositRequest(requestId, status) {
+            if (!currentUser || !users[currentUser] || !users[currentUser].isAdmin) return;
+            
+            const userData = users[currentUser].data;
+            const request = userData.admin.depositRequests.find(r => r.id === requestId);
+            if (!request) return;
+            
+            request.status = status;
+            request.processedAt = new Date().toISOString();
+            request.processedBy = currentUser;
+            
+            if (status === 'completed') {
+                // Находим пользователя, для которого пополнение
+                const targetUser = users[request.username];
+                if (targetUser) {
+                    targetUser.data.balance += request.amount;
+                    
+                    // Обновляем бухгалтерию
+                    const rubAmount = request.amount * CONFIG.EXCHANGE_RATE;
+                    accounting.totalDeposits += request.amount;
+                    accounting.totalDepositsRUB += rubAmount;
+                    accounting.profit += rubAmount;
+                    
+                    accounting.transactions.unshift({
+                        id: Date.now(),
+                        type: 'deposit',
+                        username: request.username,
+                        amount: request.amount,
+                        amountRUB: rubAmount,
+                        method: request.method,
+                        date: new Date().toISOString(),
+                        status: 'completed'
+                    });
+                    
+                    saveUsers();
+                    saveAccounting();
+                    showNotification(`Баланс пользователя ${request.username} пополнен на ${formatNumber(request.amount)} CR`, 'success');
+                }
+            }
+            
+            saveUsers();
+            updateAdminPanel();
+            showNotification(`Заявка на пополнение ${status === 'completed' ? 'подтверждена' : 'отклонена'}`, 'success');
+        }
+
+        // Обновление бухгалтерии
+        function updateAccounting() {
+            const container = document.getElementById('accounting-content');
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="accounting-stats">
+                    <div class="accounting-stat">
+                        <h4>Общие пополнения</h4>
+                        <div class="stat-value stat-positive">${formatNumber(accounting.totalDeposits)} CR</div>
+                        <div>≈ ${formatNumber(accounting.totalDepositsRUB)} ₽</div>
+                    </div>
+                    
+                    <div class="accounting-stat">
+                        <h4>Общие выводы</h4>
+                        <div class="stat-value stat-negative">${formatNumber(accounting.totalWithdraws)} CR</div>
+                        <div>≈ ${formatNumber(accounting.totalWithdrawsRUB)} ₽</div>
+                    </div>
+                    
+                    <div class="accounting-stat">
+                        <h4>Прибыль платформы</h4>
+                        <div class="stat-value ${accounting.profit >= 0 ? 'stat-positive' : 'stat-negative'}">
+                            ${formatNumber(accounting.profit)} ₽
+                        </div>
+                        <div>${formatNumber(accounting.profit / CONFIG.EXCHANGE_RATE)} CR</div>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 2rem;">История транзакций</h3>
+                <div class="transaction-history">
+                    ${accounting.transactions.slice(0, 20).map(transaction => `
+                        <div class="transaction-item ${transaction.type === 'deposit' ? 'transaction-success' : 'transaction-failed'}">
+                            <div>
+                                <div style="font-weight: bold;">${transaction.type === 'deposit' ? 'Пополнение' : 'Вывод'} - ${transaction.username}</div>
+                                <div style="font-size: 0.9rem; color: #aaa;">
+                                    ${transaction.skinName ? `Скин: ${transaction.skinName}` : `Метод: ${transaction.method === 'crypto' ? 'Крипта' : 'Рубли'}`}
+                                </div>
+                                <div style="font-size: 0.8rem;">${new Date(transaction.date).toLocaleString()}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: bold; color: ${transaction.type === 'deposit' ? '#00b894' : '#e74c3c'}">
+                                    ${transaction.type === 'deposit' ? '+' : '-'}${formatNumber(transaction.amount)} CR
+                                </div>
+                                <div style="font-size: 0.9rem;">
+                                    ${transaction.type === 'deposit' ? '+' : '-'}${formatNumber(transaction.amountRUB)} ₽
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div style="margin-top: 2rem; text-align: center;">
+                    <button class="btn btn-danger" onclick="resetAccounting()">
+                        <i class="fas fa-trash"></i> Сбросить бухгалтерию
+                    </button>
+                    <button class="btn btn-warning" onclick="exportAccountingData()" style="margin-left: 1rem;">
+                        <i class="fas fa-download"></i> Экспорт данных
+                    </button>
+                </div>
+            `;
+        }
+
+        // Сброс бухгалтерии
+        function resetAccounting() {
+            if (!confirm('Вы уверены? Это сбросит всю бухгалтерию платформы.')) return;
+            
+            accounting = {
+                totalDeposits: 0,
+                totalWithdraws: 0,
+                totalDepositsRUB: 0,
+                totalWithdrawsRUB: 0,
+                profit: 0,
+                transactions: []
+            };
+            
+            saveAccounting();
+            updateAccounting();
+            showNotification('Бухгалтерия сброшена!', 'success');
+        }
+
+        // Экспорт данных бухгалтерии
+        function exportAccountingData() {
+            const dataStr = JSON.stringify(accounting, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `crystal_skins_accounting_${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification('Данные бухгалтерии экспортированы!', 'success');
+        }
+
+        // Показать раздел пополнения
+        function showDepositSection() {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.querySelector('.nav-link[data-section="deposit"]').classList.add('active');
+            
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.getElementById('deposit').classList.add('active');
+        }
+
+        // Выбор суммы для криптовалюты
+        function selectCryptoAmount(amount) {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            userData.deposit.selectedAmount = amount;
+            userData.deposit.selectedMethod = 'crypto';
+            
+            const rubAmount = amount * CONFIG.EXCHANGE_RATE;
+            const usdtAmount = rubAmount; // 1 USDT = 1 рубль (примерно)
+            
+            document.getElementById('crypto-amount').textContent = usdtAmount.toFixed(2);
+            document.getElementById('crypto-receive').textContent = formatNumber(amount);
+            document.getElementById('crypto-nickname').textContent = currentUser;
+            
+            document.getElementById('crypto-payment').style.display = 'block';
+            document.getElementById('rub-payment').style.display = 'none';
+            document.getElementById('deposit-success').style.display = 'none';
+        }
+
+        // Выбор суммы для рублей
+        function selectRubAmount(amount) {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            userData.deposit.selectedAmount = amount;
+            userData.deposit.selectedMethod = 'rub';
+            
+            const rubAmount = amount * CONFIG.EXCHANGE_RATE;
+            
+            if (rubAmount < CONFIG.MIN_RUB_DEPOSIT) {
+                showNotification(`Минимальная сумма пополнения: ${CONFIG.MIN_RUB_DEPOSIT} рублей`, 'warning');
+                return;
+            }
+            
+            document.getElementById('rub-amount').textContent = rubAmount.toFixed(0);
+            document.getElementById('rub-nickname').textContent = currentUser;
+            
+            document.getElementById('rub-payment').style.display = 'block';
+            document.getElementById('crypto-payment').style.display = 'none';
+            document.getElementById('deposit-success').style.display = 'none';
+        }
+
+        // Копировать адрес криптовалюты
+        function copyCryptoAddress() {
+            const address = document.getElementById('crypto-address-text').textContent;
+            navigator.clipboard.writeText(address).then(() => {
+                showNotification('Адрес скопирован в буфер обмена!', 'success');
+            });
+        }
+
+        // Копировать реквизиты рублевого пополнения
+        function copyRubDetails() {
+            const details = `
+Озон Банк
+Номер: +79522809573
+Получатель: Марк.Г
+Сумма: ${document.getElementById('rub-amount').textContent} рублей
+Комментарий: ${currentUser}
+            `.trim();
+            
+            navigator.clipboard.writeText(details).then(() => {
+                showNotification('Реквизиты скопированы в буфер обмена!', 'success');
+            });
+        }
+
+        // Отправить заявку на пополнение
+        function submitDepositRequest(method) {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const amount = userData.deposit.selectedAmount;
+            
+            if (!amount || amount <= 0) {
+                showNotification('Выберите сумму для пополнения!', 'warning');
+                return;
+            }
+            
+            const rubAmount = amount * CONFIG.EXCHANGE_RATE;
+            
+            if (method === 'rub' && rubAmount < CONFIG.MIN_RUB_DEPOSIT) {
+                showNotification(`Минимальная сумма пополнения: ${CONFIG.MIN_RUB_DEPOSIT} рублей`, 'warning');
+                return;
+            }
+            
+            // Создаем заявку
+            const request = {
+                id: Date.now(),
+                username: currentUser,
+                amount: amount,
+                method: method,
+                rubAmount: rubAmount,
+                createdAt: new Date().toISOString(),
+                status: 'pending'
+            };
+            
+            // Добавляем заявку в данные текущего пользователя (для админа)
+            userData.admin.depositRequests.unshift(request);
+            
+            // Сохраняем
+            saveUsers();
+            
+            // Показываем сообщение об успехе
+            document.getElementById('deposit-success').style.display = 'block';
+            document.getElementById('crypto-payment').style.display = 'none';
+            document.getElementById('rub-payment').style.display = 'none';
+            
+            showNotification('Заявка на пополнение отправлена! Ожидайте подтверждения администратора.', 'success');
+            
+            // Обновляем прогресс задания
+            updateTaskProgress(5, 1);
+        }
+
+        // Продажа скина
+        function showSellModal(index, event) {
+            if (!currentUser || !users[currentUser]) return;
+            
+            event.stopPropagation();
+            
+            const userData = users[currentUser].data;
+            const skin = userData.inventory[index];
+            
+            if (!skin) return;
+            
+            const sellAmount = Math.floor(skin.price * (1 - CONFIG.SELL_TAX));
+            
+            const modal = document.getElementById('sell-skin-modal');
+            const content = document.getElementById('sell-skin-content');
+            
+            content.innerHTML = `
+                <div style="margin-bottom: 1rem;">
+                    <div style="width: 100%; height: 100px; background: ${skin.color}; border-radius: 5px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                        <i class="fas fa-gem" style="font-size: 2rem;"></i>
+                    </div>
+                    <p><strong>${skin.name}</strong></p>
+                    <div class="skin-rarity rarity-${skin.rarity}">${getRarityName(skin.rarity)}</div>
+                </div>
+                <p>Стоимость скина: <strong>${formatNumber(skin.price)} CR</strong></p>
+                <p>Комиссия продажи: <strong style="color: var(--danger);">${(CONFIG.SELL_TAX * 100)}%</strong></p>
+                <p style="font-size: 1.2rem; color: var(--warning);">Вы получите: <strong>${formatNumber(sellAmount)} CR</strong></p>
+            `;
+            
+            document.getElementById('confirm-sell').onclick = () => sellSkin(index);
+            
+            modal.style.display = 'flex';
+        }
+
+        function sellSkin(index) {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const skin = userData.inventory[index];
+            
+            if (!skin) return;
+            
+            const sellAmount = Math.floor(skin.price * (1 - CONFIG.SELL_TAX));
+            
+            // Удаляем скин из инвентаря
+            userData.inventory.splice(index, 1);
+            
+            // Добавляем деньги на баланс
+            userData.balance += sellAmount;
+            
+            // Обновляем UI
+            updateUI();
+            saveUsers();
+            
+            // Закрываем модальное окно
+            document.getElementById('sell-skin-modal').style.display = 'none';
+            
+            // Показываем уведомление
+            showNotification(`Скин продан за ${formatNumber(sellAmount)} CR!`, 'success');
+            
+            // Обновляем прогресс задания
+            updateTaskProgress(4, 1);
+        }
+
+        // Обновление задач
+        function updateTasks() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const container = document.getElementById('tasks-list');
+            
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            userData.tasks.daily.forEach((task, index) => {
+                const progressPercent = (task.current / task.target) * 100;
+                const taskElement = document.createElement('div');
+                taskElement.className = 'task-item';
+                taskElement.innerHTML = `
+                    <div>
+                        <h4>${task.title}</h4>
+                        <p style="color: #aaa; font-size: 0.9rem;">Награда: ${formatNumber(task.reward)} CR</p>
+                    </div>
+                    <div class="task-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                        </div>
+                        <span>${task.current}/${task.target}</span>
+                        ${task.completed ? 
+                            '<span style="color: var(--success);"><i class="fas fa-check-circle"></i> Выполнено</span>' :
+                            `<button class="btn btn-success" onclick="claimTask(${index})" ${task.current >= task.target ? '' : 'disabled'}>
+                                Забрать
+                            </button>`
+                        }
+                    </div>
+                `;
+                container.appendChild(taskElement);
+            });
+        }
+
+        // Обновление прогресса задачи
+        function updateTaskProgress(taskId, value) {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const task = userData.tasks.daily.find(t => t.id === taskId);
+            
+            if (task && !task.completed) {
+                task.current += value;
+                if (task.current > task.target) {
+                    task.current = task.target;
+                }
+                
+                updateTasks();
+                saveUsers();
+            }
+        }
+
+        // Забрать награду за задачу
+        function claimTask(index) {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            const task = userData.tasks.daily[index];
+            
+            if (!task || task.completed || task.current < task.target) return;
+            
+            // Добавляем награду на баланс
+            userData.balance += task.reward;
+            task.completed = true;
+            
+            // Обновляем UI
+            updateUI();
+            updateTasks();
+            saveUsers();
+            
+            showNotification(`Награда ${formatNumber(task.reward)} CR получена!`, 'success');
+        }
+
+        // Забрать все награды
+        function claimAllTasks() {
+            if (!currentUser || !users[currentUser]) return;
+            
+            const userData = users[currentUser].data;
+            let totalReward = 0;
+            
+            userData.tasks.daily.forEach(task => {
+                if (!task.completed && task.current >= task.target) {
+                    totalReward += task.reward;
+                    task.completed = true;
+                }
+            });
+            
+            if (totalReward > 0) {
+                userData.balance += totalReward;
+                updateUI();
+                updateTasks();
+                saveUsers();
+                showNotification(`Все награды получены! Итого: ${formatNumber(totalReward)} CR`, 'success');
+            } else {
+                showNotification('Нет доступных наград для получения', 'warning');
+            }
+        }
+
+        // Таймер обновления задач
+        function startTaskResetTimer() {
+            const timerElement = document.getElementById('tasks-reset-timer');
+            
+            if (!timerElement) return;
+            
+            const updateTimer = () => {
+                const now = new Date();
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                tomorrow.setHours(0, 0, 0, 0);
+                
+                const timeLeft = tomorrow.getTime() - now.getTime();
+                const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                timerElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            };
+            
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // Вспомогательные функции
+        function getRarityName(rarity) {
+            const names = {
+                'common': 'Обычный',
+                'uncommon': 'Необычный',
+                'rare': 'Редкий',
+                'epic': 'Эпический',
+                'legendary': 'Легендарный'
+            };
+            return names[rarity] || rarity;
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const text = document.getElementById('notification-text');
+            
+            notification.className = 'notification';
+            if (type === 'error') notification.classList.add('error');
+            if (type === 'warning') notification.classList.add('warning');
+            
+            text.textContent = message;
+            notification.style.display = 'flex';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Настройка событий
+        function setupEventListeners() {
+            // Навигация
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = link.getAttribute('data-section');
+                    
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    document.querySelectorAll('.section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    document.getElementById(sectionId).classList.add('active');
+                    
+                    // Загружаем данные для раздела
+                    if (sectionId === 'upgrade') {
+                        updateUpgradeItems();
+                    } else if (sectionId === 'contracts') {
+                        updateContractItems();
+                    } else if (sectionId === 'tasks') {
+                        updateTasks();
+                    } else if (sectionId === 'withdraw') {
+                        updateWithdrawItems();
+                    } else if (sectionId === 'admin') {
+                        updateAdminPanel();
+                    }
+                });
+            });
+            
+            // Вкладки админ-панели
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    document.querySelectorAll('.admin-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    document.getElementById(tabId).classList.add('active');
+                    
+                    if (tabId === 'accounting') {
+                        updateAccounting();
+                    } else if (tabId === 'users') {
+                        updateUsersList();
+                    }
+                });
+            });
+            
+            // Crash игра
+            document.getElementById('crash-place-bet').addEventListener('click', placeBet);
+            document.getElementById('crash-cash-out').addEventListener('click', cashOutAll);
+            
+            // Открытие кейса
+            document.getElementById('spin-case-slider').addEventListener('click', spinCaseSlider);
+            document.getElementById('close-opening').addEventListener('click', closeOpeningScreen);
+            
+            // Модальные окна
+            document.getElementById('close-upgrade-result').addEventListener('click', () => {
+                document.getElementById('upgrade-result-modal').style.display = 'none';
+            });
+            
+            document.getElementById('close-contract-result').addEventListener('click', () => {
+                document.getElementById('contract-result-modal').style.display = 'none';
+            });
+            
+            document.getElementById('cancel-sell').addEventListener('click', () => {
+                document.getElementById('sell-skin-modal').style.display = 'none';
+            });
+            
+            // Закрытие модальных окон при клике вне их
+            window.onclick = function(event) {
+                const modals = ['sell-skin-modal', 'upgrade-result-modal', 'contract-result-modal'];
+                modals.forEach(modalId => {
+                    const modal = document.getElementById(modalId);
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            };
+        }
+
+        // Инициализация при загрузке
+        window.addEventListener('DOMContentLoaded', () => {
+            init();
+        });
+
+        // Экспорт функций в глобальную область видимости
+        window.login = login;
+        window.register = register;
+        window.logout = logout;
+        window.setBetAmount = setBetAmount;
+        window.placeBet = placeBet;
+        window.cashOutAll = cashOutAll;
+        window.showDepositSection = showDepositSection;
+        window.selectCryptoAmount = selectCryptoAmount;
+        window.selectRubAmount = selectRubAmount;
+        window.copyCryptoAddress = copyCryptoAddress;
+        window.copyRubDetails = copyRubDetails;
+        window.submitDepositRequest = submitDepositRequest;
+        window.processWithdrawRequest = processWithdrawRequest;
+        window.processDepositRequest = processDepositRequest;
+        window.claimAllTasks = claimAllTasks;
+        window.showSellModal = showSellModal;
+        window.sellSkin = sellSkin;
+        window.openCase = openCase;
+        window.claimTask = claimTask;
+        window.showCaseSlider = showCaseSlider;
+        window.spinCaseSlider = spinCaseSlider;
+        window.closeOpeningScreen = closeOpeningScreen;
+        window.resetAllUsers = resetAllUsers;
+        window.exportUsersData = exportUsersData;
+        window.resetAccounting = resetAccounting;
+        window.exportAccountingData = exportAccountingData;
+    </script>
+</body>
+</html>
